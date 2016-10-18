@@ -1,3 +1,4 @@
-includes/dbconfig.php
-.idea
-uploads
+/includes/dbconfig.php
+/.idea
+/uploads
+/nbproject
