@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="458f5f31-fac3-44fb-817e-317a39af2154" name="league.kansascitytabletennis.com" url="http://league.kansascitytabletennis.com">
+        <fileTransfer host="league.kansascitytabletennis.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

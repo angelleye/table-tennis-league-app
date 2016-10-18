@@ -1,0 +1,105 @@
+body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+.navbar-inverse {
+    background-color: #fcb040;
+    border-color: #fcb040;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+
+/*.dual-list .list-group {
+    margin-top: 8px;
+}
+.list-left li, .list-right li {
+    cursor: pointer;
+}
+.list-arrows {
+    padding-top: 100px;
+}
+.list-arrows button {
+    margin-bottom: 20px;
+}*/
+ul.source, ul.target {
+  min-height: 50px;
+  padding: 2px;
+  list-style-type: none;
+  list-style-position: inside;
+}
+.source li, .target li {
+  margin: 5px;
+  padding: 5px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.source li {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    width: 100%;
+}
+.target li {
+  background-color: #ebf5e6;
+  border: 1px solid #d6e9c6;
+  color: #468847;
+  width: 100%;
+}
+.sortable-dragging {
+  border-color: #ccc !important;
+  background-color: #fafafa !important;
+  color: #bbb !important;
+}
+.sortable-placeholder {
+  height: 40px;
+}
+.source .sortable-placeholder {
+  border: 2px dashed #f8e0b1 !important;
+  background-color: #fefcf5 !important;
+}
+.target .sortable-placeholder {
+  border: 2px dashed #add38d !important;
+  background-color: #f6fbf4 !important;
+}
+
+.placeholder {
+  list-style-type: none;
+  text-align: center;
+  font-style: italic;
+  border: 1px dashed #ddd !important;
+  padding: 0.5em 0 3em 0 !important;
+}
+
+.label{
+    font-size: 12px;
+    font-weight: 100;
+}
+#dualListDiv .panel-body{
+    padding: 10px;
+    height: 500px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.sortable_list {
+width: 100%;
+min-height: 20px;
+list-style-type: none;
+margin: 0;
+padding: 5px 0 0 0;
+float: left;
+margin-right: 10px;
+}
+
+.sortable_list li {
+margin: 0 5px 5px 5px;
+padding: 5px;
+font-size: 1.2em;
+width: 100%;
+color: #31708f;
+background-color: #d9edf7;
+border-color: #bce8f1;
+}
