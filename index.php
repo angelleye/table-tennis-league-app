@@ -93,7 +93,7 @@
           <div class="col-md-6 col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-check"></i>Players List</h4>
+                    <h4><i class="fa fa-fw fa-check"></i>All Players</h4>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
@@ -107,7 +107,7 @@
           <div class="col-md-6 col-sm-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-check"></i>Playares who will play today</h4>
+                    <h4><i class="fa fa-fw fa-check"></i>Today's Players</h4>
                 </div>
                 <div class="panel-body">
                     <div class="right">
