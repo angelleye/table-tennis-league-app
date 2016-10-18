@@ -1,5 +1,5 @@
 <?php
-    include './dbconfig.php';    
+    include './includes/dbconfig.php';
     $array=json_decode($_POST['user_id']);
     $array=  implode(',', $array);
     $date=date('Y-m-d h:i:s');

@@ -1,5 +1,5 @@
 <?php
-        include './dbconfig.php';
+        include './includes/dbconfig.php';
         $upload_path = './uploads/';
         $newname = rand(0000, 9999) . basename($_FILES["importInputFile"]["name"]);
         $target_file = $upload_path . $newname;

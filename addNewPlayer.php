@@ -1,6 +1,6 @@
 <?php
 
-include './dbconfig.php';
+include './includes/dbconfig.php';
 $firstname = $_POST['firstname'];
 $lastname  = $_POST['lastname'];
 $mname     = $_POST['mname'];
