@@ -153,7 +153,7 @@
                             </div>     
                             
                             <div class="form-group">
-                             <label>Birth Date</label>
+                             <label>Birth Date (MM/DD/YYYY)</label>
                                 <input type="text" class="form-control" name="bdate"  id="datetimePicker"/>
                             </div>
                             
