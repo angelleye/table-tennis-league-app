@@ -33,7 +33,7 @@
                 die();
             }
         } else {
-            echo json_encode(array('error' => 'true', 'msg' => 'only CSV is allowed extension'));             
+            echo json_encode(array('error' => 'true', 'msg' => 'Only CSV files are allowed.'));
             die();
         }
         
