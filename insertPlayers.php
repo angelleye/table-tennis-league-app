@@ -17,7 +17,10 @@
                     }
                     $i++;
                 }                
-                $query=mysqli_query($con,'INSERT INTO users (member_id, fname,lname,mname,sex,rating,expiration,last_played,email) VALUES '.implode(',', $sql));
+                $query=mysqli_query($con,'INSERT INTO users (member_id, fname,lname,mname,sex,rating,expiration,last_played,email) VALUES '.implode(',', $sql).
+                        ' ON DUPLICATE KEY UPDATE member_id=VALUES(member_id),fname=VALUES(fname),lname=VALUES(lname),
+                         mname=VALUES(mname),sex=VALUES(sex),rating=VALUES(rating),expiration=VALUES(expiration),last_played=VALUES(last_played),email=VALUES(email)');
+                
                 if($query){
                     fclose($csvfile);
                     echo json_encode(array('error' => 'false', 'msg' => 'The file '.$newname . ' has been uploaded.'));
