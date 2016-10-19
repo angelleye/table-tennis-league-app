@@ -179,11 +179,6 @@
                             <div class="form-group">
                                 <label>League Rating</label>
                                 <input class="form-control" name="rating"  id="rating" type="text" autocomplete="off"/>
-                            </div>  
-                            
-                            <div class="form-group">
-                             <label>Last Played</label>
-                                <input type="text" class="form-control" name="last_played"  id="last_played"/>
                             </div>
                             
                             <div class="form-group">

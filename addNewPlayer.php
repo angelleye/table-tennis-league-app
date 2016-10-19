@@ -8,7 +8,6 @@ $bdate     = $_POST['bdate'];
 $sex       = $_POST['emodel'];
 $rating    = $_POST['rating'];
 $expiration= $_POST['expiration'];
-$last_played=$_POST['last_played'];
 $email     = $_POST['email'];
 $usatt     = $_POST['usatt'];
 
