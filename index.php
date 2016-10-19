@@ -423,17 +423,10 @@ $('#resetForm').click(function(){
                     }
                 },
                 emodel:{
-                    validators: {
-                        notEmpty: {
-                            message: 'This field is required and can\'t be empty'
-                        }
-                    }
+
                 },
                 usatt:{
                      validators: {
-                        notEmpty: {
-                            message: 'This field is required and can\'t be empty'
-                        },
                         stringLength: {
                             min: 1,
                             max: 30,
@@ -447,9 +440,6 @@ $('#resetForm').click(function(){
                 },
                 email:{
                     validators:{
-                        notEmpty :{
-                            message: 'This field is required and can\'t be empty'
-                        },
                         emailAddress : {
                             message: 'Please Enter Valid email ID'
                         }
@@ -457,9 +447,6 @@ $('#resetForm').click(function(){
                 },
                 rating :{
                     validators:{
-                        notEmpty :{
-                            message: 'This field is required and can\'t be empty'
-                        },
                         regexp: {
                             regexp: /^[0-9]+$/,
                             message: 'The rating can only consist of number'
