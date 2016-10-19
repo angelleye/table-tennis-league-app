@@ -383,42 +383,42 @@ $('#resetForm').click(function(){
             },
             fields: {
                 firstname: {
-                    message: 'The Firstname is not valid',
+                    message: 'The First Name entered is not valid.',
                     validators: {
                         notEmpty: {
-                            message: 'The firstname is required and can\'t be empty'
+                            message: 'The First Name is required and can\'t be empty.'
                         },
                         stringLength: {
                             min: 2,
                             max: 30,
-                            message: 'The Firstname must be more than 2 and less than 30 characters long'
+                            message: 'The First Name must be more than 2 and fewer than 30 characters long.'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z]+$/,
-                            message: 'The Firstname can only consist of alphabetical'
+                            message: 'The First Name can only consist of alphabetical characters.'
                         }
                     }
                 },
                 lastname: {
                     validators: {
                         notEmpty: {
-                            message: 'The Lastname is required and can\'t be empty'
+                            message: 'The Last Name is required and can\'t be empty.'
                         },
                         stringLength: {
                             min: 2,
                             max: 30,
-                            message: 'The Lastname must be more than 2 and less than 30 characters long'
+                            message: 'The Last Name must be more than 2 and less than 30 characters long.'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z]+$/,
-                            message: 'The Lastname can only consist of alphabetical'
+                            message: 'The Last Name can only consist of alphabetical characters.'
                         }
                     }
                 },
                 bdate: {
                     validators: {
                         notEmpty: {
-                            message: 'The date is required and cannot be empty'
+                            message: 'Birth Date is required and cannot be empty.'
                         }
                     }
                 },
@@ -430,18 +430,18 @@ $('#resetForm').click(function(){
                         stringLength: {
                             min: 1,
                             max: 30,
-                            message: 'The MemberId must be more than 1 and less than 30 characters long'
+                            message: 'The USATT Member ID must be more than 1 and less than 30 characters long.'
                         },
                         regexp: {
                             regexp: /^[0-9]+$/,
-                            message: 'The MemberId can only consist of number'
+                            message: 'The USATT Member ID can only consist of numbers.'
                         }   
                      }
                 },
                 email:{
                     validators:{
                         emailAddress : {
-                            message: 'Please Enter Valid email ID'
+                            message: 'Please enter a valid email address.'
                         }
                     }
                 },
@@ -449,7 +449,7 @@ $('#resetForm').click(function(){
                     validators:{
                         regexp: {
                             regexp: /^[0-9]+$/,
-                            message: 'The rating can only consist of number'
+                            message: 'The League Rating can only consist of numbers.'
                         }  
                     }
                 }
