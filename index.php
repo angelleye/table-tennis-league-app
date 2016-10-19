@@ -97,7 +97,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="searchLeft" id="searchLeft" placeholder="Search by MemberId or Name or Email" />  
+                        <input type="text" class="form-control" name="searchLeft" id="searchLeft" placeholder="Search by USATT Member ID, Name or Email" />
                     </div>
                   <ul class="source connected">                      
                   </ul>
