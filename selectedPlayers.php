@@ -19,11 +19,11 @@
         foreach ($output as $value) {
             echo '<div class="col-md-4 col-sm-4">
                     <div class="panel panel-success">
-                      <div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>Group '.$k.'</h4></div>
+                      <div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>Group '.$k.' <button type="button" class="btn btn-warning pull-right allSortButton">Sort</button></h4></div>
                           <div class="panel-body">
                             <ul id="sortable'.$k.'" class="sortable_list connectedSortable ">';
             foreach ($value as $v) {
-                echo '<li>
+                echo '<li data-rating='.$v['rating'].'>
                       <span class="label label-success">'.$v['member_id'].'</span>
                       <span class="label label-info">'.$v['fname'].' '.$v['lname'].'</span>
                       <span class="label label-warning">'.$v['rating'].'</span>

@@ -93,7 +93,7 @@
           <div class="col-md-6 col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-check"></i>All Players</h4>
+                    <h4><i class="fa fa-fw fa-check"></i>All Players<button type="button" id="leftSortButton" class="btn btn-warning pull-right">Sort</button></h4>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
@@ -107,7 +107,7 @@
           <div class="col-md-6 col-sm-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-check"></i>Today's Players</h4>
+                    <h4><i class="fa fa-fw fa-check"></i>Today's Players<button type="button" id="rightSortButton" class="btn btn-warning pull-right">Sort</button></h4>
                 </div>
                 <div class="panel-body">
                     <div class="right">
@@ -248,7 +248,8 @@ $('#importForm').submit(function(e) {
                 }
                 else if(response.error=='false'){
                     $('#errorFlag').html('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Success! '+response.msg+'</strong></div>');
-                    $('#viewListButton').show().fadeIn("slow");
+                    //$('#viewListButton').show().fadeIn("slow");
+                    setTimeout(function(){ $("#viewListButton").trigger("click"); },1000);
                 }
             }
     });
@@ -329,6 +330,23 @@ function progress(e){
     
 </script>
 <script type="text/javascript">
+    
+  $(document).on('click','.allSortButton',function (){
+        $(this).closest('h4').closest('div').next().children("ul").children().sort(sort_li).appendTo($(this).closest('h4').closest('div').next().children("ul"));  
+  });  
+  
+  $('#leftSortButton').click(function (){
+     $(".source li").sort(sort_li).appendTo('.source');
+     //$('#leftSortButton').closest('h4').closest('div').next().children("ul").children().sort(sort_li).appendTo($('#leftSortButton').closest('h4').closest('div').next().children("ul"));
+  });
+  
+  $('#rightSortButton').click(function (){
+     $(".target li").sort(sort_li).appendTo('.target');
+  });   
+  function sort_li(a, b){
+    return ($(b).data('rating')) > ($(a).data('rating')) ? 1 : -1;    
+  }
+    
   $(function () {
     $(".source, .target").sortable({
       connectWith: ".connected",
