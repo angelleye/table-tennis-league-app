@@ -1,6 +1,7 @@
 <?php
 
 include './includes/dbconfig.php';
+
 $firstname = !empty($_POST['firstname']) ? $_POST['firstname'] : '';
 $lastname  = !empty($_POST['lastname']) ? $_POST['lastname'] : '';
 $mname     = !empty($_POST['mname']) ? $_POST['mname'] : '';
