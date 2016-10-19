@@ -49,7 +49,7 @@
                         <a id="addNewPlayerLink"  style="cursor: pointer">Add New User</a>
                     </li>
                     <li>
-                        <a id="refreshMe"  style="cursor: pointer">Clear/Refresh</a>
+                        <a id="refreshMe"  style="cursor: pointer">Start Over</a>
                     </li>
                 </ul>
             </div>
