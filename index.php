@@ -118,7 +118,7 @@
             </div>
           </div>              
         </div>
-        <div class="row"><div class="col-lg-9"><button type="button" class="btn btn-primary pull-right btn-lg" id="processButton">Process Selected</button></div></div>
+        <div class="row"><div class="col-lg-9"><button type="button" class="btn btn-primary pull-right btn-lg" id="processButton">Create Groups</button></div></div>
         <br>
     </div>
     
@@ -186,7 +186,7 @@
                                 <input class="form-control" name="usatt"  id="usatt" type="text" autocomplete="off"/>
                             </div>
                             
-                        <button type="submit" class="btn btn-primary">Create User</button>
+                        <button type="submit" class="btn btn-primary">Create Player</button>
                         <button type="reset" class="btn btn-default" id="resetForm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
                     </div>
                     </form>
