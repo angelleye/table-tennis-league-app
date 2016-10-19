@@ -10,8 +10,8 @@ $rating    = !empty($_POST['rating']) ? $_POST['rating'] : '';
 $email     = !empty($_POST['email']) ? $_POST['email'] : '';
 $usatt     = !empty($_POST['usatt']) ? $_POST['usatt'] : '';
 
-$query = mysqli_query($con, 'INSERT INTO users (member_id, fname,lname,mname,sex,rating,expiration,last_played,email) 
-               VALUES ("' . $usatt . '","' . $firstname . '","' . $lastname . '","'.$mname.'","'.$sex.'","'.$rating.'","'.$expiration.'","'.$last_played.'","'.$email.'")');
+$query = mysqli_query($con, 'INSERT INTO users (member_id, fname,lname,mname,sex,rating,email) 
+               VALUES ("' . $usatt . '","' . $firstname . '","' . $lastname . '","'.$mname.'","'.$sex.'","'.$rating.'","'.$email.'")');
 
 if($query){
     echo json_encode(array('error' => 'false', 'msg' => 'New Player Added Successfully'));
