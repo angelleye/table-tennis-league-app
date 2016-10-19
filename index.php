@@ -339,6 +339,8 @@ function progress(e){
         stop: function (event, ui) {
                 ui.item.toggleClass("placeholder");
         }
+    }).disableSelection().on('click', '.click_area', function(){
+            $(this).appendTo($(".source, .target").not($(this).closest("ul")));
     });    
   });
 </script>
