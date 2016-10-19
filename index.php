@@ -319,9 +319,9 @@ function progress(e){
  }
  
   $('#searchLeft').keyup(function(){        
-        var searchText = $(this).val();        
+        var searchText = $(this).val().toLowerCase();        
         $('.source > li').each(function(){            
-            var currentLiText = $(this).text(),
+            var currentLiText = $(this).text().toLowerCase(),
                 showCurrentLi = currentLiText.indexOf(searchText) !== -1;            
             $(this).toggle(showCurrentLi);            
         });     
