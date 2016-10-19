@@ -20,7 +20,7 @@ if($query){
     die();
 }
 else{
-    echo json_encode(array('error' => 'true', 'msg' => 'Something went wrong'));
+    echo json_encode(array('error' => 'true', 'msg' => 'Doh! Something went wrong.'));
     die();
 }
 ?>
