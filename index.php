@@ -182,11 +182,6 @@
                             </div>  
                             
                             <div class="form-group">
-                             <label>Expiration</label>
-                                <input type="text" class="form-control" name="expiration"  id="expiration"/>
-                            </div>
-                            
-                            <div class="form-group">
                              <label>Last Played</label>
                                 <input type="text" class="form-control" name="last_played"  id="last_played"/>
                             </div>
