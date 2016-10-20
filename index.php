@@ -1,4 +1,5 @@
 <?php
+    session_start();
     error_reporting(0);
     include './includes/dbconfig.php';
     if($con){
@@ -87,8 +88,9 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <?php 
-                    if(isset($_GET['success'])){
-                        echo '<div class="alert alert-success" role="alert"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
+                    if(isset($_SESSION['success'])){
+                        echo '<div class="alert alert-success" role="alert" id="alrt_success"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
+                        unset($_SESSION['success']);
                     }
                 ?>
                 <h1>Import Players</h1>
@@ -149,13 +151,7 @@
         </div>
         <div class="row"><div class="col-lg-9"><button type="button" class="btn btn-primary pull-right btn-lg" id="processButton">Process Selected</button></div></div>
         <br>
-    </div>
-    
-    <div class="container" id="finalListDiv" style="display: none">
-        <div class="row" id="finalListrow">
-
-        </div>
-    </div>   
+    </div>      
     
     <div class="container" id="addNewPlayerContainer" style="display: none">
         <div class="row">
@@ -228,7 +224,14 @@
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->
+    
     </div>   
+        <div class="container" id="finalListDiv" style="display: none">
+        <div class="row" id="finalListrow">
+
+        </div>
+    </div> 
+    
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -543,4 +546,7 @@ $('#resetForm').click(function(){
         $('#refreshMe').click(function (){
             location.reload();
         });
+        setTimeout(function() {
+            $("#alrt_success").hide('blind', {}, 500)
+        }, 5000);
 </script>
