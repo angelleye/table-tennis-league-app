@@ -1,4 +1,5 @@
 <?php
+session_start();
 include './includes/dbconfig.php';
 if($con){
         $result = mysqli_query($con,"SHOW TABLES");
@@ -83,7 +84,8 @@ $(document).on('click','#goButton',function (){
         success:function(response){
             var response=JSON.parse(response);
             if(response.error == 'false'){
-                window.location.href='index.php?success=1';
+                <?php $_SESSION['success']='1'; ?>
+                window.location.href='index.php';
             }
             else{
                 $('#errmsg').html('<div class="alert alert-danger" role="alert"><strong>Something went wrong</strong></div>');
