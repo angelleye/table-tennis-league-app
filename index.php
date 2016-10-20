@@ -1,3 +1,27 @@
+<?php
+    error_reporting(0);
+    include './includes/dbconfig.php';
+    if($con){
+        $result = mysqli_query($con,"SHOW TABLES");
+        $tableList=array();
+        while($cRow = mysqli_fetch_array($result))
+        {
+            $tableList[] = $cRow[0];
+        }
+        if(in_array('users',$tableList) && in_array('list_for_the_day',$tableList)){
+            
+        }
+        else{
+            echo "<script>window.location.href ='install.php';</script>";
+            die();
+        }       
+    }
+    else{
+        echo "<h1>Please update Database configuration</h1>";
+        exit;
+    }
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +52,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-3">
+        <div class="container col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-4">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -62,6 +86,11 @@
     <div class="container" id="importDiv">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
+                <?php 
+                    if(isset($_GET['success'])){
+                        echo '<div class="alert alert-success" role="alert"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
+                    }
+                ?>
                 <h1>Import Players</h1>
                 <div id="errorFlag"></div>
                 <form name="importForm" id="importForm" enctype="multipart/form-data"> 
