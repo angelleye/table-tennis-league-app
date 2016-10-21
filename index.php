@@ -9,7 +9,7 @@
         {
             $tableList[] = $cRow[0];
         }
-        if(in_array('users',$tableList) && in_array('list_for_the_day',$tableList)){
+        if(in_array('users',$tableList) && in_array('result_tt',$tableList) && in_array('event',$tableList)){
             
         }
         else{
