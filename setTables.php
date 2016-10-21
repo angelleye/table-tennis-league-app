@@ -45,7 +45,7 @@
                 `rating` int(11) NOT NULL,
                 `expiration` varchar(25) NOT NULL,
                 `last_played` varchar(25) NOT NULL,
-                `email` varchar(255) NOT NULL,PRIMARY KEY (user_id), UNIQUE KEY (`member_id`)
+                `email` varchar(255) NOT NULL,PRIMARY KEY (user_id)
               ) ENGINE=InnoDB DEFAULT CHARSET=latin1";
     $query=  mysqli_query($con, $userTable);
     if(!empty(mysqli_error_list($con))){
