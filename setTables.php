@@ -26,7 +26,7 @@
         $errors[0]=mysqli_error_list($con);
     }    
     
-    $resultTable="CREATE TABLE result_tt( result_id int(11) NOT NULL AUTO_INCREMENT, event_id int(11) NOT NULL,
+    $resultTable="CREATE TABLE result_tt( result_id int(11) NOT NULL AUTO_INCREMENT, event_id int(11) NOT NULL,group_id int(11) NOT NULL,
                   winner_id int(11) NOT NULL, looser_id int(11) NOT NULL, winner_game_count int(11) NOT NULL,
                   looser_game_count int(11) NOT NULL, game_record varchar(255) NOT NULL, match_record varchar(255) NOT NULL,
                   place varchar(255) NOT NULL,PRIMARY KEY (result_id),INDEX(event_id) ) ENGINE=InnoDB DEFAULT CHARSET=latin1";

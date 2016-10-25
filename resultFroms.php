@@ -67,6 +67,30 @@
         <!-- /.container -->
     </nav>
     <div class="clearfix" style="margin-top: 60px"></div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form id="gamePlayForm" role="form" method="post" action="">
+                <input type="hidden" name="inputrowno" id="inputrowno" />
+                <input type="hidden" name="inputcolno" id="inputcolno" />
+                <input type="hidden" name="inputgroupno" id="inputgroupno" />
+                <input type="hidden" name="inputrowPlayerId" id="inputrowPlayerId" />
+                <input type="hidden" name="inputcolPlayerId" id="inputcolPlayerId" />
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Game Play</h4>
+                  </div>
+                  <div class="modal-body">
+                      
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveTd">Save changes</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <ul class="nav nav-tabs">
@@ -109,17 +133,18 @@
                                         echo '<tr> 
                                                 <th scope="row">'.chr(($j+65)).'</th>'; 
                                                 $u=$finalArray[$i][($j)];
-                                                $qu="SELECT CONCAT(fname,lname) as Name FROM `users` where user_id='$u'";
+                                                $qu="SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                                 $res=mysqli_query($con, $qu);
                                                 while ($row = mysqli_fetch_array($res)) {
-                                                    echo "<td>{$row['Name']}</td>";
+                                                    $playerName=$row['Name'];
+                                                    echo "<td data-playerId='{$u}' class='G".($i+1)."PlayerCol".chr(($j+65))."'>{$row['Name']}</td>";
                                                 }
                                                 for ($k=0; $k<count($finalArray[$i]); $k++) {  
                                                     if($k==$j){
                                                         echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}'></td>";
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }       
                                                 } 
                                         echo    '<td></td> 
@@ -156,17 +181,18 @@
                                         echo '<tr> 
                                                 <th scope="row">'.chr(($j+65)).'</th> ';
                                                 $u=$finalArray[$i][($j)];
-                                                $qu="SELECT CONCAT(fname,lname) as Name FROM `users` where user_id='$u'";
+                                                $qu="SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                                 $res=mysqli_query($con, $qu);
                                                 while ($row = mysqli_fetch_array($res)) {
-                                                    echo "<td>{$row['Name']}</td>";
+                                                    $playerName=$row['Name'];
+                                                    echo "<td data-playerId='{$u}' class='G".($i+1)."PlayerCol".chr(($j+65))."'>{$row['Name']}</td>";
                                                 }
                                                 for ($k=0; $k<count($finalArray[$i]); $k++) {  
                                                     if($k==$j){
                                                         echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}'></td>";
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }
                                                 }        
 
@@ -181,406 +207,6 @@
                     }                    
                 }
                 ?>
-<!--                <div id="G1" class="tab-pane fade in active">
-                    <h1>G1</h1>
-                    <table class="table table-hover table-bordered table-responsive"> 
-                <thead>
-                        <tr> 
-                        <th>#</th> 
-                        <th>Player</th> 
-                        <th>A</th> 
-                        <th>B</th> 
-                        <th>C</th> 
-                        <th>D</th> 
-                        <th>E</th> 
-                        <th>F</th> 
-                        <th>Game Record</th> 
-                        <th>Match Record</th> 
-                        <th>Place</th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
-                    <tr> 
-                        <th scope="row">A</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">B</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">C</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">D</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">E</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">F</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                </tbody> 
-            </table>
-                </div>
-                <div id="G2" class="tab-pane fade">
-                    <h1>G2</h1>
-                    <table class="table table-hover table-bordered table-responsive"> 
-                <thead>
-                    <tr> 
-                        <th>#</th> 
-                        <th>Player</th> 
-                        <th>A</th> 
-                        <th>B</th> 
-                        <th>C</th> 
-                        <th>D</th> 
-                        <th>E</th> 
-                        <th>F</th> 
-                        <th>Game Record</th> 
-                        <th>Match Record</th> 
-                        <th>Place</th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
-                    <tr> 
-                        <th scope="row">A</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">B</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">C</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">D</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">E</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">F</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                </tbody> 
-            </table>
-                </div>
-                <div id="G3" class="tab-pane fade">
-                    <h1>G3</h1>
-                  <table class="table table-hover table-bordered table-responsive"> 
-                <thead>
-                    <tr> 
-                        <th>#</th> 
-                        <th>Player</th> 
-                        <th>A</th> 
-                        <th>B</th> 
-                        <th>C</th> 
-                        <th>D</th> 
-                        <th>E</th> 
-                        <th>F</th> 
-                        <th>Game Record</th> 
-                        <th>Match Record</th> 
-                        <th>Place</th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
-                    <tr> 
-                        <th scope="row">A</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">B</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">C</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">D</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">E</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">F</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                </tbody> 
-            </table>
-                </div>
-                <div id="G4" class="tab-pane fade">
-                    <h1>G4</h1>
-                  <table class="table table-hover table-bordered table-responsive"> 
-                <thead>
-                    <tr> 
-                        <th>#</th> 
-                        <th>Player</th> 
-                        <th>A</th> 
-                        <th>B</th> 
-                        <th>C</th> 
-                        <th>D</th> 
-                        <th>E</th> 
-                        <th>F</th> 
-                        <th>Game Record</th> 
-                        <th>Match Record</th> 
-                        <th>Place</th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
-                    <tr> 
-                        <th scope="row">A</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">B</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr> 
-                    <tr> 
-                        <th scope="row">C</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">D</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td>  
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">E</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                    <tr> 
-                        <th scope="row">F</th> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                        <td></td> 
-                    </tr>
-                </tbody> 
-            </table>
-                </div>-->
             </div>
            
         </div>
@@ -592,6 +218,88 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrapvalidator-master/dist/js/bootstrapValidator.js"></script>
     <script src="js/jquery-ui.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/daterangepicker.js"></script>
 </html>
+
+<script type="text/javascript">
+    $(document).on('click','.tdclass',function(){
+        var group         = $(this).data('group');
+        var combination   = $(this).data('combination');
+        var colno         = $(this).data('colno');
+        var rowno         = $(this).data('rowno');
+        var rowPlayerName = $(this).data('player');
+        var colPlayerName = $('.'+group+'PlayerCol'+colno).text();
+        var rowPlayerId   = $(this).data('tdplayerid');
+        var colPlayerId   = $('.'+group+'PlayerCol'+colno).data('playerid');
+        $('#inputrowno').val(rowno);
+        $('#inputcolno').val(colno);
+        $('#inputgroupno').val(group);
+        $('#inputrowPlayerId').val(rowPlayerId);
+        $('#inputcolPlayerId').val(colPlayerId);
+        var htmlStr='<div class="form-group"><label><span class="label label-success">'+ rowPlayerName +'</span> Plays with <span class="label label-success">'+ colPlayerName +'</span></label> </div> <div class="form-group"> <label>Winner</label> <div class="radio"> <label> <input type="radio" name="wr" id="w1" value="'+rowno+'">'+rowPlayerName+'</label> </div> <div class="radio"> <label> <input type="radio" name="wr" id="w2" value="'+colno+'">'+colPlayerName+' </label> </div> </div> <div class="form-group"> <label>Games</label> <input class="form-control" name="games" /> </div>';
+        
+        $('#myModal')
+                .find('.modal-body').html(htmlStr).end()
+                .modal('show');
+    });
+    
+    $(document).on('click','#saveTd',function(){
+         //var str= $('#gamePlayForm').serialize();
+         var winner  =  $('input[name=wr]:checked').val();
+         var looser  =  $('input[name=wr]:not(:checked)').val();
+         var games   =  $('input[name=games]').val();
+         var getrowno=  $('#inputrowno').val();
+         var getcolno=  $('#inputcolno').val();
+         var getgroupno=  $('#inputgroupno').val();
+         var rowPlayerId= $('#inputrowPlayerId').val();
+         var colPlayerId= $('#inputcolPlayerId').val();
+         
+         if(winner==getrowno && looser ==getcolno){
+             var wcmb = getgroupno+'-'+getrowno+'-'+getcolno;
+             var lcmb = getgroupno+'-'+getcolno+'-'+getrowno;
+             $('*[data-combination="'+wcmb+'"]').text('W ' + games);
+             var backway = games.split("").reverse().join("");
+             $('*[data-combination="'+lcmb+'"]').text('L ' + backway);
+             var winner_id=rowPlayerId;
+             var looser_id=colPlayerId;
+             $.ajax({
+                type:'POST',
+                url: "saveResult.php",
+                data:{
+                    event_id  : <?php echo $_SESSION['event_id']; ?>,
+                    group_id  : getgroupno,
+                    winner_id : winner_id,
+                    looser_id : looser_id,
+                    winner_game_count : games,
+                    looser_game_count : backway
+                },
+                dataType : "json",
+                success:function(response){
+                    if(response.error=='false'){
+                       $('#myModal').modal('hide');  
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                    
+                }
+            });                        
+         }
+         else{
+             var wcmb = getgroupno+'-'+getcolno+'-'+getrowno;
+             var lcmb = getgroupno+'-'+getrowno+'-'+getcolno;
+             $('*[data-combination="'+wcmb+'"]').text('W ' + games);
+             var backway = games.split("").reverse().join("");
+             $('*[data-combination="'+lcmb+'"]').text('L ' + backway);   
+             var winner_id=colPlayerId;
+             var looser_id=rowPlayerId;
+             $('#myModal').modal('hide');
+         }
+         
+         
+    });
+        
+  
+</script>
