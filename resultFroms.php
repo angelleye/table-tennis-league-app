@@ -147,10 +147,10 @@
                                                         echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }       
                                                 } 
-                                        echo    '<td></td> 
+                                        echo    "<td data-playeridGamerecord='{$u}'></td> 
+                                                <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td></td> 
-                                                <td></td> 
-                                              </tr> ';
+                                              </tr>";
                                     }
                               }  
                         echo '</table>';
@@ -196,10 +196,10 @@
                                                     }
                                                 }        
 
-                                        echo    '<td></td> 
+                                        echo    "<td data-playeridGamerecord='{$u}'></td> 
+                                                <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td></td> 
-                                                <td></td> 
-                                              </tr> ';
+                                              </tr> ";
                                     }
                               }  
                         echo '</table>';
@@ -210,6 +210,7 @@
             </div>
            
         </div>
+        <div class="row"><div class="container"> <button class="btn btn-primary btn-lg">Submit & E-mail All Results</button>  </div></div>
     </div>
 </body>
     <!-- jQuery Version 1.11.1 -->
@@ -246,7 +247,6 @@
     });
     
     $(document).on('click','#saveTd',function(){
-         //var str= $('#gamePlayForm').serialize();
          var winner  =  $('input[name=wr]:checked').val();
          var looser  =  $('input[name=wr]:not(:checked)').val();
          var games   =  $('input[name=games]').val();
@@ -264,6 +264,52 @@
              $('*[data-combination="'+lcmb+'"]').text('L ' + backway);
              var winner_id=rowPlayerId;
              var looser_id=colPlayerId;
+             var winner_left_sum=0;
+             var winner_right_sum=0;
+             var looser_left_sum=0;
+             var looser_right_sum=0;
+             var winner_match_record_left=0;
+             var winner_match_record_right=0;
+             var looser_match_record_left=0;
+             var looser_match_record_right=0;
+             
+             $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
+                 if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
+                     winner_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
+                     winner_right_sum += parseInt($.trim($(this).html()).substring(4));
+                     if($.trim($(this).html()).substring(0,1)=='W'){
+                         winner_match_record_left++;
+                     }
+                     else if ($.trim($(this).html()).substring(0,1)=='L'){
+                         winner_match_record_right++;
+                     }
+                 }        
+             });
+             var winner_Match_Record = winner_match_record_left + '-' + winner_match_record_right;
+             $('*[data-playeridmatchrecord="'+rowPlayerId+'"]').html('').html(winner_Match_Record);
+             
+             var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
+             $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
+             
+             //======col player
+             $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
+                 if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
+                     looser_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
+                     looser_right_sum += parseInt($.trim($(this).html()).substring(4));      
+                     if($.trim($(this).html()).substring(0,1)=='W'){
+                         looser_match_record_left++;
+                     }
+                     else if ($.trim($(this).html()).substring(0,1)=='L'){
+                         looser_match_record_right++;
+                     }
+                 }        
+             });
+             
+             var looser_Match_Record = looser_match_record_left + '-' + looser_match_record_right;
+             $('*[data-playeridmatchrecord="'+colPlayerId+'"]').html('').html(looser_Match_Record);
+             
+             var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
+             $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
              $.ajax({
                 type:'POST',
                 url: "saveResult.php",
@@ -273,7 +319,11 @@
                     winner_id : winner_id,
                     looser_id : looser_id,
                     winner_game_count : games,
-                    looser_game_count : backway
+                    looser_game_count : backway,
+                    winner_Match_Record : winner_Match_Record,
+                    winner_game_record : winner_game_record,
+                    looser_Match_Record : looser_Match_Record,
+                    looser_game_record : looser_game_record
                 },
                 dataType : "json",
                 success:function(response){
@@ -285,7 +335,7 @@
                     }
                     
                 }
-            });                        
+            });                       
          }
          else{
              var wcmb = getgroupno+'-'+getcolno+'-'+getrowno;
@@ -295,11 +345,77 @@
              $('*[data-combination="'+lcmb+'"]').text('L ' + backway);   
              var winner_id=colPlayerId;
              var looser_id=rowPlayerId;
-             $('#myModal').modal('hide');
-         }
-         
-         
-    });
-        
-  
+             var winner_left_sum=0;
+             var winner_right_sum=0;
+             var looser_left_sum=0;
+             var looser_right_sum=0;
+             var winner_match_record_left=0;
+             var winner_match_record_right=0;
+             var looser_match_record_left=0;
+             var looser_match_record_right=0;
+             
+             $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
+                 if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
+                     winner_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
+                     winner_right_sum += parseInt($.trim($(this).html()).substring(4));
+                     if($.trim($(this).html()).substring(0,1)=='W'){
+                         winner_match_record_left++;
+                     }
+                     else if ($.trim($(this).html()).substring(0,1)=='L'){
+                         winner_match_record_right++;
+                     }
+                 }        
+             });
+             var winner_Match_Record = winner_match_record_left + '-' + winner_match_record_right;
+             $('*[data-playeridmatchrecord="'+rowPlayerId+'"]').html('').html(winner_Match_Record);
+             
+             var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
+             $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
+             
+             //======col player
+             $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
+                 if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
+                     looser_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
+                     looser_right_sum += parseInt($.trim($(this).html()).substring(4));      
+                     if($.trim($(this).html()).substring(0,1)=='W'){
+                         looser_match_record_left++;
+                     }
+                     else if ($.trim($(this).html()).substring(0,1)=='L'){
+                         looser_match_record_right++;
+                     }
+                 }        
+             });
+             
+             var looser_Match_Record = looser_match_record_left + '-' + looser_match_record_right;
+             $('*[data-playeridmatchrecord="'+colPlayerId+'"]').html('').html(looser_Match_Record);
+             
+             var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
+             $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
+             $.ajax({
+                type:'POST',
+                url: "saveResult.php",
+                data:{
+                    event_id  : <?php echo $_SESSION['event_id']; ?>,
+                    group_id  : getgroupno,
+                    winner_id : winner_id,
+                    looser_id : looser_id,
+                    winner_game_count : games,
+                    looser_game_count : backway,
+                    winner_Match_Record : winner_Match_Record,
+                    winner_game_record : winner_game_record,
+                    looser_Match_Record : looser_Match_Record,
+                    looser_game_record : looser_game_record
+                },
+                dataType : "json",
+                success:function(response){
+                    if(response.error=='false'){
+                       $('#myModal').modal('hide');  
+                    }
+                    else{
+                        alert(response.message);
+                    }                    
+                }
+            });
+         }                  
+    });          
 </script>
