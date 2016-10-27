@@ -107,10 +107,10 @@
             </ul>
             <div class="tab-content">
                 <?php
-                for($i=0;$i<=count($group_list);$i++){
+                for($i=0;$i<count($group_list);$i++){
                     if($i==0){
                         echo '<div id="G'.($i+1).'" class="tab-pane fade in active">';
-                        echo '<h1>G'.($i+1).'</h1>';
+                        echo '<h1>Group '.($i+1).'</h1>';
                         echo '<table class="table table-hover table-bordered table-responsive">';
                               for($j=-1;$j<count($finalArray[$i]);$j++){
                                     if($j==-1){
@@ -158,7 +158,7 @@
                     }
                     else{
                         echo '<div id="G'.($i+1).'" class="tab-pane">';
-                        echo '<h1>G'.($i+1).'</h1>';
+                        echo '<h1>Group '.($i+1).'</h1>';
                         echo '<table class="table table-hover table-bordered table-responsive">';
                               for($j=-1;$j<count($finalArray[$i]);$j++){
                                     if($j==-1){
@@ -210,7 +210,7 @@
             </div>
            
         </div>
-        <div class="row"><div class="container"> <button class="btn btn-primary btn-lg">Submit & E-mail All Results</button>  </div></div>
+        <div class="row"><div class="container"> <button class="btn btn-primary btn-lg" id="submitResult">Submit & E-mail All Results</button>  </div></div>
     </div>
 </body>
     <!-- jQuery Version 1.11.1 -->
@@ -417,5 +417,22 @@
                 }
             });
          }                  
-    });          
+    });
+    
+    $(document).on('click','#submitResult', function(){
+        var finalHtml = [];
+        $('.tab-content').children().each(function(){
+          finalHtml.push($(this).html());
+        });
+        $.ajax({
+                type:'POST',
+                url: "saveandsend.php",
+                data:{
+                    finalHtml  : finalHtml,
+                },
+                success:function(response){
+                    
+                }
+            });
+    });
 </script>
