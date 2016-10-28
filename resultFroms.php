@@ -149,7 +149,7 @@
                                                 } 
                                         echo    "<td data-playeridGamerecord='{$u}'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
-                                                <td></td> 
+                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
                                               </tr>";
                                     }
                               }  
@@ -198,7 +198,7 @@
 
                                         echo    "<td data-playeridGamerecord='{$u}'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
-                                                <td></td> 
+                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
                                               </tr> ";
                                     }
                               }  
@@ -272,7 +272,9 @@
              var winner_match_record_right=0;
              var looser_match_record_left=0;
              var looser_match_record_right=0;
-             
+             var winnerPercentage=0;
+             var names = [];
+             var names2 = [];
              $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
                      winner_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
@@ -290,6 +292,10 @@
              
              var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
              $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
+             
+             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right));
+             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winnerPercentage);
+             
              
              //======col player
              $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
@@ -310,6 +316,26 @@
              
              var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
              $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
+             
+             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right));
+             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserPercentage);
+             
+             $('*[data-groupPlace="'+getgroupno+'"]').each(function() {
+                if($(this).attr('playerplace') != 'Tie'){
+                      names.push(parseFloat($(this).attr('playerplace')));
+                      $(this).addClass('gotPer'+getgroupno);
+                }
+             });
+             var i=0;  
+             names.sort(function(a, b){return b-a});
+             $('.gotPer'+getgroupno).each(function() {
+                 //console.log($(this).attr('playerplace')); 
+                 $(this).html((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1) + 'th Place');
+             });   
+             /*$('.gotPer'+getgroupno).each(function (){
+                 
+             });*/
+             console.log(names2);
              $.ajax({
                 type:'POST',
                 url: "saveResult.php",
@@ -353,7 +379,7 @@
              var winner_match_record_right=0;
              var looser_match_record_left=0;
              var looser_match_record_right=0;
-             
+             var names = [];
              $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
                      winner_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
@@ -372,6 +398,8 @@
              var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
              $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
              
+             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right));
+             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winnerPercentage);
              //======col player
              $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
@@ -391,6 +419,24 @@
              
              var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
              $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
+             
+             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right));
+             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserPercentage);
+             
+             $('*[data-groupPlace="'+getgroupno+'"]').each(function() {
+                if($(this).attr('playerplace') != 'Tie'){
+                      names.push(parseFloat($(this).attr('playerplace')));
+                      $(this).addClass('gotPer'+getgroupno);
+                }
+             });
+             var i=0;  
+             names.sort(function(a, b){return b-a});
+             $('.gotPer'+getgroupno).each(function() {
+                 //console.log($(this).attr('playerplace')); 
+                 $(this).html((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1) + 'th Place');
+                
+             });  
+             
              $.ajax({
                 type:'POST',
                 url: "saveResult.php",
