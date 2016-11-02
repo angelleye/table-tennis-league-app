@@ -239,13 +239,17 @@
         $('#inputgroupno').val(group);
         $('#inputrowPlayerId').val(rowPlayerId);
         $('#inputcolPlayerId').val(colPlayerId);
-        var htmlStr='<div class="form-group"><label><span class="label label-success">'+ rowPlayerName +'</span> Plays with <span class="label label-success">'+ colPlayerName +'</span></label> </div> <div class="form-group"> <label>Winner</label> <div class="radio"> <label> <input type="radio" name="wr" id="w1" value="'+rowno+'">'+rowPlayerName+'</label> </div> <div class="radio"> <label> <input type="radio" name="wr" id="w2" value="'+colno+'">'+colPlayerName+' </label> </div> </div> <div class="form-group"> <label>Games</label> <input class="form-control" name="games" /> </div>';
+        var htmlStr='<div class="form-group"><label><span class="label label-success">'+ rowPlayerName +'</span> Plays with <span class="label label-success">'+ colPlayerName +'</span></label> </div> <div class="form-group"> <label>Winner</label> <div class="radio"> <label> <input type="radio" name="wr" id="w1" value="'+rowno+'">'+rowPlayerName+'</label> </div> <div class="radio"> <label> <input type="radio" name="wr" id="w2" value="'+colno+'">'+colPlayerName+' </label> </div> </div> <div class="form-group"> <label>Games</label> <input class="form-control" name="games" id="inputGames"/><i id="modalItag"></i><small id="modalSmalltag"></small></div>';
         
         $('#myModal')
                 .find('.modal-body').html(htmlStr).end()
                 .modal('show');
     });
-    
+    function getGetOrdinal(n) {
+        var s=["th","st","nd","rd"],
+        v=n%100;
+        return n+(s[(v-20)%10]||s[v]||s[0]);
+    }
     $(document).on('click','#saveTd',function(){
          var winner  =  $('input[name=wr]:checked').val();
          var looser  =  $('input[name=wr]:not(:checked)').val();
@@ -293,8 +297,10 @@
              var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
              $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
              
-             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right));
-             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winnerPercentage);
+             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right)).toFixed();
+             var winnerGameRecordPer = ((parseInt(winner_left_sum)*100)/parseInt(winner_left_sum+winner_right_sum)).toFixed();
+             var winplayerPlace=winnerPercentage.toString()+winnerGameRecordPer.toString();
+             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winplayerPlace);
              
              
              //======col player
@@ -317,8 +323,11 @@
              var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
              $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
              
-             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right));
-             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserPercentage);
+             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right)).toFixed();
+             var looserGameRecordPer = ((parseInt(looser_left_sum)*100)/parseInt(looser_left_sum+looser_right_sum)).toFixed();
+             var looserplayerPlace=looserPercentage.toString()+looserGameRecordPer.toString();
+             
+             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserplayerPlace);
              
              $('*[data-groupPlace="'+getgroupno+'"]').each(function() {
                 if($(this).attr('playerplace') != 'Tie'){
@@ -327,16 +336,42 @@
                 }
              });
              var i=0;  
-             names.sort(function(a, b){return b-a});
+             var tempA = [];
+            names.sort(function(a, b){
+              if (isNaN(a) || isNaN(b)) {
+                if (b > a) return -1;
+                    else return 1;
+              }
+              return b - a;
+            });  
+             $.each(names, function (key,value) {
+              if($.inArray(value, tempA) === -1) {
+                   tempA.push(value);
+               }else{
+                  var indx=names.indexOf(value);
+                  //console.log(value+" is a duplicate value");
+                  names[key]='Tie';
+                  names[indx]='Tie';
+               }
+            });            
+            names.sort(function(a, b){
+              if (isNaN(a) || isNaN(b)) {
+                if (b > a) return -1;
+                    else return 1;
+              }
+              return b - a;
+            });
              $('.gotPer'+getgroupno).each(function() {
-                 //console.log($(this).attr('playerplace')); 
-                 $(this).html((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1) + 'th Place');
+                 if($.inArray( parseFloat($(this).attr('playerplace')), names) === -1){
+                     $(this).html('Tie');
+                 }
+                 else{
+                     
+                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)) + ' Place');
+                 }                 
              });   
-             /*$('.gotPer'+getgroupno).each(function (){
-                 
-             });*/
-             console.log(names2);
-             $.ajax({
+             
+            $.ajax({
                 type:'POST',
                 url: "saveResult.php",
                 data:{
@@ -361,7 +396,7 @@
                     }
                     
                 }
-            });                       
+            });                      
          }
          else{
              var wcmb = getgroupno+'-'+getcolno+'-'+getrowno;
@@ -398,8 +433,11 @@
              var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
              $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
              
-             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right));
-             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winnerPercentage);
+             var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right)).toFixed();
+             var winnerGameRecordPer = ((parseInt(winner_left_sum)*100)/parseInt(winner_left_sum+winner_right_sum)).toFixed();
+             var winplayerPlace=winnerPercentage.toString()+winnerGameRecordPer.toString();
+             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winplayerPlace);
+             
              //======col player
              $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
@@ -420,8 +458,10 @@
              var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
              $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
              
-             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right));
-             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserPercentage);
+             var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right)).toFixed();
+             var looserGameRecordPer = ((parseInt(looser_left_sum)*100)/parseInt(looser_left_sum+looser_right_sum)).toFixed();
+             var looserplayerPlace=looserPercentage.toString()+looserGameRecordPer.toString();
+             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserplayerPlace);
              
              $('*[data-groupPlace="'+getgroupno+'"]').each(function() {
                 if($(this).attr('playerplace') != 'Tie'){
@@ -430,11 +470,38 @@
                 }
              });
              var i=0;  
-             names.sort(function(a, b){return b-a});
+             var tempA = [];
+             names.sort(function(a, b){
+              if (isNaN(a) || isNaN(b)) {
+                if (b > a) return -1;
+                    else return 1;
+              }
+              return b - a;
+            });  
+             $.each(names, function (key,value) {
+              if($.inArray(value, tempA) === -1) {
+                   tempA.push(value);
+               }else{
+                  var indx=names.indexOf(value);
+                  //console.log(value+" is a duplicate value");
+                  names[key]='Tie';
+                  names[indx]='Tie';
+               }
+            });            
+            names.sort(function(a, b){
+              if (isNaN(a) || isNaN(b)) {
+                if (b > a) return -1;
+                    else return 1;
+              }
+              return b - a;
+            });   
              $('.gotPer'+getgroupno).each(function() {
-                 //console.log($(this).attr('playerplace')); 
-                 $(this).html((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1) + 'th Place');
-                
+                if($.inArray( parseFloat($(this).attr('playerplace')), names) === -1){
+                     $(this).html('Tie');
+                 }
+                 else{
+                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)) + ' Place');
+                 } 
              });  
              
              $.ajax({
@@ -480,5 +547,44 @@
                     
                 }
             });
+    });
+    
+    $(document).on('keyup' ,'#inputGames',function (){
+            var pattern = new RegExp (/\b^[0-9]{1,2}[-][0-9]{1,2}$\b/);
+            var parentDiv= $(this).parent();
+            if(pattern.test($(this).val())){
+                
+                var firstSub=$(this).val().split('-')[0];
+                var lastSub=$(this).val().split('-')[1];
+                if(parentDiv.hasClass('has-feedback has-error')){
+                    parentDiv.removeClass('has-error').addClass('has-success'); 
+                    $('#modalItag').removeClass('glyphicon glyphicon-remove').addClass('glyphicon glyphicon-ok');
+                }
+                else{
+                    parentDiv.addClass('has-feedback has-success');
+                    $('#modalItag').addClass('form-control-feedback glyphicon glyphicon-ok');
+                }
+                if(firstSub < lastSub){
+                        parentDiv.removeClass('has-success').addClass('has-error'); 
+                        $('#modalSmalltag').addClass('help-block').html('Please Enter Valid Game Scores');
+                        $('#modalItag').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-remove');
+                }
+                else{
+                        $('#modalSmalltag').removeClass('help-block').html('');
+                 }
+                
+            }
+            else{
+                if(parentDiv.hasClass('has-feedback has-success')){
+                    parentDiv.removeClass('has-success').addClass('has-error'); 
+                    $('#modalItag').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-remove');
+                }
+                else{
+                    parentDiv.addClass('has-feedback has-error ');
+                    $('#modalItag').addClass('form-control-feedback glyphicon glyphicon-remove');
+                } 
+                $('#modalSmalltag').addClass('help-block').html('Please Enter Valid Game Scores');
+            }
+        
     });
 </script>
