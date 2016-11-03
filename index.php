@@ -233,6 +233,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrapvalidator-master/dist/js/bootstrapValidator.js"></script>
     <script src="js/jquery-ui.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/daterangepicker.js"></script>
 </body>
