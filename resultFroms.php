@@ -85,7 +85,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveTd">Save changes</button>
+                    <button type="submit" class="btn btn-primary" id="saveTd">Save changes</button>
                   </div>
                 </div>
             </form>
@@ -239,18 +239,20 @@
         $('#inputgroupno').val(group);
         $('#inputrowPlayerId').val(rowPlayerId);
         $('#inputcolPlayerId').val(colPlayerId);
-        var htmlStr='<div class="form-group"><label><span class="label label-success">'+ rowPlayerName +'</span> Plays with <span class="label label-success">'+ colPlayerName +'</span></label> </div> <div class="form-group"> <label>Winner</label> <div class="radio"> <label> <input type="radio" name="wr" id="w1" value="'+rowno+'">'+rowPlayerName+'</label> </div> <div class="radio"> <label> <input type="radio" name="wr" id="w2" value="'+colno+'">'+colPlayerName+' </label> </div> </div> <div class="form-group"> <label>Games</label> <input class="form-control" name="games" id="inputGames"/><i id="modalItag"></i><small id="modalSmalltag"></small></div>';
+        var htmlStr='<div class="form-group"><label><span class="label label-success">'+ rowPlayerName +'</span> Plays with <span class="label label-success">'+ colPlayerName +'</span></label> </div> <div class="form-group"> <label>Winner</label> <div class="radio"> <label> <input type="radio" name="wr" id="w1" checked value="'+rowno+'">'+rowPlayerName+'</label> </div> <div class="radio"> <label> <input type="radio" name="wr" id="w2" value="'+colno+'">'+colPlayerName+' </label> </div> </div> <div class="form-group"> <label>Games</label> <input class="form-control" name="games" id="inputGames" autocomplete="off"/><i id="modalItag"></i><small id="modalSmalltag"></small></div>';
         
         $('#myModal')
                 .find('.modal-body').html(htmlStr).end()
                 .modal('show');
+         $('#gamePlayForm').bootstrapValidator('addField', $('#inputGames'));
+         //$('#gamePlayForm').bootstrapValidator('addField', $("input[name='wr']"));
     });
     function getGetOrdinal(n) {
         var s=["th","st","nd","rd"],
         v=n%100;
         return n+(s[(v-20)%10]||s[v]||s[0]);
     }
-    $(document).on('click','#saveTd',function(){
+    function saveToTable(){
          var winner  =  $('input[name=wr]:checked').val();
          var looser  =  $('input[name=wr]:not(:checked)').val();
          var games   =  $('input[name=games]').val();
@@ -367,10 +369,11 @@
                  }
                  else{
                      
-                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)) + ' Place');
+                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)));
                  }                 
              });   
-             
+             var winnerPlaceDB= $('*[data-playeridplace="'+winner_id+'"]').text();
+             var looserPlaceDB= $('*[data-playeridplace="'+looser_id+'"]').text();
             $.ajax({
                 type:'POST',
                 url: "saveResult.php",
@@ -384,7 +387,9 @@
                     winner_Match_Record : winner_Match_Record,
                     winner_game_record : winner_game_record,
                     looser_Match_Record : looser_Match_Record,
-                    looser_game_record : looser_game_record
+                    looser_game_record : looser_game_record,
+                    winnerPlaceDB : winnerPlaceDB,
+                    looserPlaceDB : looserPlaceDB
                 },
                 dataType : "json",
                 success:function(response){
@@ -415,7 +420,7 @@
              var looser_match_record_left=0;
              var looser_match_record_right=0;
              var names = [];
-             $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
+             $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
                      winner_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
                      winner_right_sum += parseInt($.trim($(this).html()).substring(4));
@@ -428,18 +433,18 @@
                  }        
              });
              var winner_Match_Record = winner_match_record_left + '-' + winner_match_record_right;
-             $('*[data-playeridmatchrecord="'+rowPlayerId+'"]').html('').html(winner_Match_Record);
+             $('*[data-playeridmatchrecord="'+colPlayerId+'"]').html('').html(winner_Match_Record);
              
              var winner_game_record= winner_left_sum +'-'+  winner_right_sum;
-             $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(winner_game_record);
+             $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(winner_game_record);
              
              var winnerPercentage = ((parseInt(winner_match_record_left)*100)/parseInt(winner_match_record_left+winner_match_record_right)).toFixed();
              var winnerGameRecordPer = ((parseInt(winner_left_sum)*100)/parseInt(winner_left_sum+winner_right_sum)).toFixed();
              var winplayerPlace=winnerPercentage.toString()+winnerGameRecordPer.toString();
-             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',winplayerPlace);
+             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',winplayerPlace);
              
              //======col player
-             $('*[data-tdplayerid="'+colPlayerId+'"]').each(function() {  
+             $('*[data-tdplayerid="'+rowPlayerId+'"]').each(function() {  
                  if($.trim($(this).html()).length > 0 || $.trim($(this).html()).length > '0'){
                      looser_left_sum += parseInt($.trim($(this).html()).substring(1,3));      
                      looser_right_sum += parseInt($.trim($(this).html()).substring(4));      
@@ -453,15 +458,15 @@
              });
              
              var looser_Match_Record = looser_match_record_left + '-' + looser_match_record_right;
-             $('*[data-playeridmatchrecord="'+colPlayerId+'"]').html('').html(looser_Match_Record);
+             $('*[data-playeridmatchrecord="'+rowPlayerId+'"]').html('').html(looser_Match_Record);
              
              var looser_game_record= looser_left_sum +'-'+  looser_right_sum;
-             $('*[data-playeridgamerecord="'+colPlayerId+'"]').html('').html(looser_game_record);
+             $('*[data-playeridgamerecord="'+rowPlayerId+'"]').html('').html(looser_game_record);
              
              var looserPercentage = ((parseInt(looser_match_record_left)*100)/parseInt(looser_match_record_left+looser_match_record_right)).toFixed();
              var looserGameRecordPer = ((parseInt(looser_left_sum)*100)/parseInt(looser_left_sum+looser_right_sum)).toFixed();
              var looserplayerPlace=looserPercentage.toString()+looserGameRecordPer.toString();
-             $('*[data-playeridplace="'+colPlayerId+'"]').attr('playerplace',looserplayerPlace);
+             $('*[data-playeridplace="'+rowPlayerId+'"]').attr('playerplace',looserplayerPlace);
              
              $('*[data-groupPlace="'+getgroupno+'"]').each(function() {
                 if($(this).attr('playerplace') != 'Tie'){
@@ -500,10 +505,11 @@
                      $(this).html('Tie');
                  }
                  else{
-                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)) + ' Place');
+                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)));
                  } 
              });  
-             
+             var winnerPlaceDB= $('*[data-playeridplace="'+winner_id+'"]').text();
+             var looserPlaceDB= $('*[data-playeridplace="'+looser_id+'"]').text();
              $.ajax({
                 type:'POST',
                 url: "saveResult.php",
@@ -517,7 +523,9 @@
                     winner_Match_Record : winner_Match_Record,
                     winner_game_record : winner_game_record,
                     looser_Match_Record : looser_Match_Record,
-                    looser_game_record : looser_game_record
+                    looser_game_record : looser_game_record,
+                    winnerPlaceDB : winnerPlaceDB,
+                    looserPlaceDB : looserPlaceDB
                 },
                 dataType : "json",
                 success:function(response){
@@ -529,8 +537,9 @@
                     }                    
                 }
             });
-         }                  
-    });
+         }  
+         return true;
+    }
     
     $(document).on('click','#submitResult', function(){
         var finalHtml = [];
@@ -547,44 +556,58 @@
                     
                 }
             });
-    });
+    });   
     
-    $(document).on('keyup' ,'#inputGames',function (){
-            var pattern = new RegExp (/\b^[0-9]{1,2}[-][0-9]{1,2}$\b/);
-            var parentDiv= $(this).parent();
-            if(pattern.test($(this).val())){
-                
-                var firstSub=$(this).val().split('-')[0];
-                var lastSub=$(this).val().split('-')[1];
-                if(parentDiv.hasClass('has-feedback has-error')){
-                    parentDiv.removeClass('has-error').addClass('has-success'); 
-                    $('#modalItag').removeClass('glyphicon glyphicon-remove').addClass('glyphicon glyphicon-ok');
-                }
-                else{
-                    parentDiv.addClass('has-feedback has-success');
-                    $('#modalItag').addClass('form-control-feedback glyphicon glyphicon-ok');
-                }
-                if(firstSub < lastSub){
-                        parentDiv.removeClass('has-success').addClass('has-error'); 
-                        $('#modalSmalltag').addClass('help-block').html('Please Enter Valid Game Scores');
-                        $('#modalItag').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-remove');
-                }
-                else{
-                        $('#modalSmalltag').removeClass('help-block').html('');
-                 }
-                
+    $('#gamePlayForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                games: {
+                    message: 'The Games Field entered is not valid.',
+                    validators: {
+                        notEmpty: {
+                            message: 'The Games Field is required and can\'t be empty.'
+                        },
+                        regexp: {
+                            regexp: /\b^[0-9]{1,2}[-][0-9]{1,2}$\b/,
+                            message: 'Please Enter Valid Games score'
+                        },
+                        callback :{
+                            callback: function (value, validator, $field) {
+                                var firstSub=value.split('-')[0];
+                                var lastSub= value.split('-')[1];
+                                if(parseInt(firstSub) < parseInt(lastSub)){
+                                    return {
+                                        valid: false,    
+                                        message: 'Winner Games Scores Must be Greater'
+                                    }
+                                }
+                                else{
+                                    return {
+                                        valid: true,    
+                                        message: 'Correct Score Entered'
+                                    }
+                                }                                
+                            }
+                        }
+                    }
+                }/*,
+                wr :{
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Winnner'
+                        }
+                    }                    
+                } */
             }
-            else{
-                if(parentDiv.hasClass('has-feedback has-success')){
-                    parentDiv.removeClass('has-success').addClass('has-error'); 
-                    $('#modalItag').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-remove');
-                }
-                else{
-                    parentDiv.addClass('has-feedback has-error ');
-                    $('#modalItag').addClass('form-control-feedback glyphicon glyphicon-remove');
-                } 
-                $('#modalSmalltag').addClass('help-block').html('Please Enter Valid Game Scores');
-            }
-        
-    });
+        })
+        .on('success.form.bv', function(e) {
+            e.preventDefault();
+            saveToTable();
+            $(e.target).bootstrapValidator('resetForm', true);
+        });
 </script>
