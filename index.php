@@ -364,8 +364,7 @@ function progress(e){
   });  
   
   $('#leftSortButton').click(function (){
-     $(".source li").sort(sort_li).appendTo('.source');
-     //$('#leftSortButton').closest('h4').closest('div').next().children("ul").children().sort(sort_li).appendTo($('#leftSortButton').closest('h4').closest('div').next().children("ul"));
+     $(".source li").sort(sort_li).appendTo('.source');     
   });
   
   $('#rightSortButton').click(function (){
@@ -411,13 +410,7 @@ $(function() {
     $('#datetimePicker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true
-    });
-    $('#expiration').daterangepicker({
-        singleDatePicker: true
-    });
-    $('#last_played').daterangepicker({
-        singleDatePicker: true
-    });
+    });    
 });
 
 $('#resetForm').click(function(){
@@ -532,4 +525,37 @@ $('#resetForm').click(function(){
         setTimeout(function() {
             $("#alrt_success").hide('blind', {}, 500)
         }, 5000);
+        
+        $(document).on('click','#getSelectedGroups',function (){
+            var items = [];
+            var chunk=[];
+            var finalArray=[];
+            $("ul.sortable_list").children().each(function() {
+                var item = $(this).attr('data-id');
+                items.push(item);
+              });
+            var totalPlayers= items.length;
+            while (items.length > 0) {
+                chunk = items.splice(0,6);
+                finalArray.push(chunk);
+            }
+            $.ajax({
+                type:'POST',
+                url: "saveEvent.php",
+                data:{
+                    player_list : JSON.stringify(finalArray),
+                    totalPlayers: totalPlayers,
+                    totalGroups : $("ul.sortable_list").length
+                },
+                dataType : "json",
+                success:function(response){
+                    if(response.error=='false'){
+                        window.location.href='resultFroms.php';
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                }
+            });
+        }); 
 </script>
