@@ -1,5 +1,6 @@
 <?php
 session_start();
+require './vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 include './includes/dbconfig.php';
 require_once './vendor/dompdf/dompdf/autoload.inc.php';
 use Dompdf\Dompdf;
@@ -54,9 +55,53 @@ foreach ($finalHtml as $value) {
     if (!file_exists("result/" . $date)) {
         mkdir("result/" . $date, 0777, true);
     }
-    file_put_contents("result/" . $date . "/Group" . $i . "-".$_SESSION['event_id'].".pdf", $output);
+    file_put_contents("result/".$date."/Group".$i."-".$_SESSION['event_id'].".pdf", $output);
     $i++;
 }
+    $attachArray = find_all_files("result/".$date);
+       
+    $mail = new PHPMailer;
+    //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+    $mail->CharSet = 'UTF-8';
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.zoho.com';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'tejasm@itpathsolutions.co.in';                 // SMTP username
+    $mail->Password = 'ips12345';                           // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
 
+    $mail->setFrom('tejasm@itpathsolutions.co.in', 'TJ');
+    $mail->addAddress('khushbus@itpathsolutions.co.in','Khushbu');     // Add a recipient
+    $mail->addReplyTo('tejasm@itpathsolutions.co.in', 'Reply name');
+    foreach($attachArray as $image){
+        $mail->addAttachment($image);         // Add attachments
+    }
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'League Results';
+    $mail->Body    = '';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail';
 
+    if(!$mail->send()) {
+
+            return 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+            return 'Message has been sent';
+    }
+    
+    
+    function find_all_files($dir) 
+    { 
+        $root = scandir($dir); 
+        foreach($root as $value) 
+        { 
+            if($value === '.' || $value === '..') {continue;} 
+            if(is_file("$dir/$value")) {$result[]="$dir/$value";continue;} 
+            foreach(find_all_files("$dir/$value") as $value) 
+            { 
+                $result[]=$value; 
+            } 
+        } 
+        return $result; 
+    } 
 ?>
