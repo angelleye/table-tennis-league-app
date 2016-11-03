@@ -76,6 +76,9 @@
                     <li>
                         <a id="refreshMe"  style="cursor: pointer">Start Over</a>
                     </li>
+                    <li>
+                        <a href="settings.php"  style="cursor: pointer">Settings</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -221,7 +224,7 @@
     </div><!-- /.row -->
     
     </div>   
-        <div class="container" id="finalListDiv" style="display: none">
+    <div class="container" id="finalListDiv" style="display: none">
         <div class="row" id="finalListrow">
 
         </div>
