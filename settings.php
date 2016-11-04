@@ -80,17 +80,25 @@
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <div class="panel panel-info">
-                    <div class="panel-heading"><strong>Settings</strong></div>
+                    <div class="panel-heading"><strong>League Director Email(s)</strong></div>
                     <div class="panel-body">
+                        <?php
+                            $query="SELECT `emails` FROM `directoremails`";
+                            $result= mysqli_query($con,$query);
+                            $count=  mysqli_num_rows($result);
+                             if($count > 0){
+                                 $emails=mysqli_fetch_row($result);
+                             }
+                        ?>
                         <form role="form" id="settingForm" method="post" action="addEmails.php">
                             <div id="messageAlert"></div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Email IDs</label>
-                                    <textarea rows="4" cols="50" class="form-control" placeholder="Enter Comma Seprated emails here"></textarea>
+                                    <label>Enter Comma Seprated Email(s) Here</label>
+                                    <textarea class="form-control" id="demails" rows="3" name="emails" placeholder="For example : abc@email.com,Xyz@host.in"><?=$emails[0]?></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" id="saveEmail">Save</button>
+                                    <button type="submit" class="btn btn-primary btn-lg" id="saveEmail">Save</button>
                                 </div>
                             </div>
                         </form>  
@@ -99,8 +107,6 @@
             </div>
         </div>
     </div>
-    
-    
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -110,5 +116,47 @@
 </html>
 
 <script>
-
+    $('#settingForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                emails: {
+                    message: 'Please Provide Valid Input',
+                    validators: {
+                        notEmpty: {
+                            message: 'This Field is required and can\'t be empty.'
+                        },
+                        regexp: {
+                            regexp: /^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},*[\W]*)+$/,
+                            message: 'Please Provide Valid Input'
+                        }
+                    }
+                }               
+            }
+        })        
+        .on('success.form.bv', function(e) {
+            // Prevent form submission
+           e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+           // Get the BootstrapValidator instance
+           var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                 if(result.error=="false"){
+                     console.log(result);
+                     $('#messageAlert').html('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>'+result.message+'.</strong></div>');
+                     $form.bootstrapValidator('resetForm', true);
+                     $('textarea#demails').val(result.data);
+                 }
+                 else{
+                    $('#messageAlert').html('<div class="alert alert-danger" role="alert"> <strong>Something Went Wrong</strong></div>'); 
+                     $form.bootstrapValidator('resetForm', true);
+                 }
+            }, 'json');
+        });
 </script>
