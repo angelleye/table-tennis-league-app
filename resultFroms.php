@@ -41,6 +41,10 @@
 
 </head>
 <body>
+    <div id="overlay" style=" background: #f6f6f6;opacity: 0.7;width: 100%;float: left;height: 100%;position: fixed;top: 0;z-index: 1031;text-align: center; display: none">
+                <img src="images/loading_tt.gif"  style=" position: relative;top: 20%;"/>
+                <div><h2>Loading...</h2></div>
+    </div>
        <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-4">
@@ -208,9 +212,23 @@
                 }
                 ?>
             </div>
-           
         </div>
         <div class="row"><div class="container"> <button class="btn btn-primary btn-lg" id="submitResult">Submit & E-mail All Results</button>  </div></div>
+    </div>
+    <div class="modal fade" id="messageModal" role="dialog">
+        <div class="modal-dialog">    
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Please Select One</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                  <a href="index.php" type="button" class="btn btn-default" >Start Over</a>
+                  <a href="" class="btn btn-primary">Go to History</a> 
+              </div>
+            </div>      
+        </div>
     </div>
 </body>
     <!-- jQuery Version 1.11.1 -->
@@ -552,8 +570,23 @@
                 data:{
                     finalHtml  : finalHtml,
                 },
+                beforeSend: function(){
+                    $('#overlay').show();
+                },
+                complete: function(){
+                    $('#overlay').hide();
+                },
+                dataType : "json",
                 success:function(response){
-                    
+                    if(response.error==='false'){
+                        $('#messageModal')
+                                .find('.modal-header').html('').html(response.message).end()
+                                .find('.modal-body').html('').html('PDF Generated and Email to League Directors').end()
+                                .modal('show'); 
+                    }
+                    else{
+                        alert(response.message);
+                    }
                 }
             });
     });   
