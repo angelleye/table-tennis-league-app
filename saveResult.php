@@ -15,11 +15,11 @@
     $looserPlaceDB = $_POST['looserPlaceDB'];
     $flag=FALSE;     
     
-    $get_Result_tt_query="SELECT * FROM  `result_tt` WHERE `event_id`='$event_id' AND `group_id` = '$group_id' AND `winner_id`= '$winner_id'";
+    $get_Result_tt_query="SELECT * FROM  `result_tt` WHERE `event_id`='$event_id' AND `group_id` = '$group_id' AND `winner_id`= '$winner_id' AND `looser_id` = '$looser_id'";
     $Result_tt = mysqli_query($con, $get_Result_tt_query);
     $Result_tt_count=  mysqli_num_rows($Result_tt);
     if($Result_tt_count > 0){
-        $updateQuery="UPDATE `result_tt` SET `winner_game_count` ='$winner_game_count' , `looser_game_count`='$looser_game_count' WHERE `event_id`='$event_id' AND `group_id` = '$group_id' AND `winner_id`= '$winner_id'";
+        $updateQuery="UPDATE `result_tt` SET `winner_game_count` ='$winner_game_count' , `looser_game_count`='$looser_game_count' WHERE `event_id`='$event_id' AND `group_id` = '$group_id' AND `winner_id`= '$winner_id' AND `looser_id` = '$looser_id'";
         $q = mysqli_query($con, $updateQuery);
         if($q){
             $flag=TRUE;
