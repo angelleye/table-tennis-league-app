@@ -137,12 +137,7 @@
                                 echo '<tr> 
                                         <th scope="row">'.chr(($j+65)).'</th>'; 
                                         $u=$finalArray[$i][($j)];
-                                        //$qu="SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
-                                        $qu="SELECT CONCAT(users.fname,' ',users.lname) as Name , `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
-                                             FROM `users` 
-                                             JOIN records ON records.player_id=users.user_id 
-                                             where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$_SESSION['event_id']."'";
-                                       
+                                        $qu="SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                         $res=mysqli_query($con, $qu);
                                         while ($row = mysqli_fetch_array($res)) {
                                             $playerName=$row['Name'];
@@ -155,10 +150,17 @@
                                             else{
                                                 echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                             }       
-                                        } 
-                                echo    "<td data-playeridGamerecord='{$u}'></td> 
-                                        <td  data-playeridmatchrecord='{$u}'></td> 
-                                        <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
+                                        }
+                                        $query_tt="SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
+                                             FROM `users` 
+                                             JOIN records ON records.player_id=users.user_id 
+                                             where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$_SESSION['event_id']."'";
+                                        
+                                        $res_tt=mysqli_query($con, $query_tt);
+                                        $data_tt=mysqli_fetch_row($res_tt);
+                                echo    "<td data-playeridGamerecord='{$u}'>$data_tt[0]</td> 
+                                        <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
+                                        <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>$data_tt[2]</td> 
                                       </tr>";
                             }
                       }  
