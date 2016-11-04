@@ -225,7 +225,7 @@
               </div>
               <div class="modal-footer">
                   <a href="index.php" type="button" class="btn btn-default" >Start Over</a>
-                  <a href="" class="btn btn-primary">Go to History</a> 
+                  <a href="eventHistory.php" class="btn btn-primary">Go to History</a> 
               </div>
             </div>      
         </div>
