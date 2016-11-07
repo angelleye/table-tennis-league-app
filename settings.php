@@ -98,11 +98,28 @@
                                     <textarea class="form-control" id="demails" rows="3" name="emails" placeholder="For example : abc@email.com,Xyz@host.in"><?=$emails[0]?></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg" id="saveEmail">Save</button>
+                                    <button type="submit" class="btn btn-info" id="saveEmail">Save</button>
                                 </div>
                             </div>
                         </form>  
                     </div>
+                </div>
+                <div class="panel panel-success">
+                     <div class="panel-heading"><strong>Pull Roster from Website</strong></div>
+                     <div class="panel-body">
+                         <form role="form" id="urlSettingForm" method="post" action="insertFromRoster.php">
+                            <div id="messageAlert2"></div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Roster File URL</label>
+                                    <input type="text" name="rosterUrl" class="form-control" id="rosterUrl" />    
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success" id="saveRosterUrl">Pull File</button>
+                                </div>
+                            </div>
+                        </form> 
+                     </div>
                 </div>
             </div>
         </div>
@@ -149,13 +166,51 @@
             $.post($form.attr('action'), $form.serialize(), function(result) {
                  if(result.error=="false"){
                      console.log(result);
-                     $('#messageAlert').html('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>'+result.message+'.</strong></div>');
+                     $('#messageAlert').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>'+result.message+'.</strong></div>');
                      $form.bootstrapValidator('resetForm', true);
                      $('textarea#demails').val(result.data);
                  }
                  else{
                     $('#messageAlert').html('<div class="alert alert-danger" role="alert"> <strong>Something Went Wrong</strong></div>'); 
                      $form.bootstrapValidator('resetForm', true);
+                 }
+            }, 'json');
+        });
+        
+        
+        $('#urlSettingForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                rosterUrl: {
+                    message: 'Please Provide Valid Input',
+                    validators: {
+                         uri: {
+                             allowLocal: true,
+                            message: 'Please Provide Valid Input'
+                        }
+                    }
+                }               
+            }
+        })        
+        .on('success.form.bv', function(e) {
+            // Prevent form submission
+           e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+           // Get the BootstrapValidator instance
+           var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                 if(result.error=="false"){
+                     $('#messageAlert2').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>'+result.msg+'.</strong></div>');
+                 }
+                 else{
+                    $('#messageAlert2').html('<div class="alert alert-danger" role="alert"> <strong>'+result.msg+'</strong></div>'); 
                  }
             }, 'json');
         });
