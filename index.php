@@ -79,6 +79,9 @@
                     <li>
                         <a href="settings.php"  style="cursor: pointer">Settings</a>
                     </li>
+                    <li>
+                        <a href="eventHistory.php"  style="cursor: pointer">History</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
