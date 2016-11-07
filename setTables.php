@@ -2,6 +2,15 @@
     include './includes/dbconfig.php';
     $errors=array();
     
+    $directorTable="CREATE TABLE `directoremails` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `emails` text NOT NULL
+                    ) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+    $query=  mysqli_query($con, $directorTable);
+    if(!empty(mysqli_error_list($con))){
+        $errors[0]=mysqli_error_list($con);
+    }
+    
     $eventTable="CREATE TABLE event(event_id int(11) NOT NULL AUTO_INCREMENT,
                    event_date varchar(25) NOT NULL, 
                    group_list text NOT NULL, 
@@ -12,7 +21,7 @@
                 ENGINE=InnoDB DEFAULT CHARSET=latin1;";
     $query=  mysqli_query($con, $eventTable);
     if(!empty(mysqli_error_list($con))){
-        $errors[0]=mysqli_error_list($con);
+        $errors[1]=mysqli_error_list($con);
     }    
     
     $resultTable="CREATE TABLE `result_tt` ( `result_id` int(11) NOT NULL AUTO_INCREMENT,`event_id` int(11) NOT NULL,`group_id` varchar(255) NOT NULL,`winner_id` int(11) NOT NULL,
@@ -20,7 +29,7 @@
                                 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
     $query=  mysqli_query($con, $resultTable);
     if(!empty(mysqli_error_list($con))){
-        $errors[1]=mysqli_error_list($con);
+        $errors[2]=mysqli_error_list($con);
     }
     
     
@@ -35,7 +44,7 @@
                          ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
     $query=  mysqli_query($con, $recordTable);
     if(!empty(mysqli_error_list($con))){
-        $errors[2]=mysqli_error_list($con);
+        $errors[3]=mysqli_error_list($con);
     }
     
     $userTable="CREATE TABLE `users` (
@@ -52,7 +61,7 @@
               ) ENGINE=InnoDB DEFAULT CHARSET=latin1";
     $query=  mysqli_query($con, $userTable);
     if(!empty(mysqli_error_list($con))){
-        $errors[3]=mysqli_error_list($con);
+        $errors[4]=mysqli_error_list($con);
     }           
     if(empty($errors)){
         echo json_encode(array('error'=>'false','message'=>'Success'));

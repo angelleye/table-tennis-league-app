@@ -8,7 +8,7 @@ if($con){
         {
             $tableList[] = $cRow[0];
         }
-        if(in_array('users',$tableList) && in_array('list_for_the_day',$tableList)){
+        if(in_array('users',$tableList) && in_array('directoremails',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
            echo "<script>window.location.href ='index.php';</script>";
            exit;
         }       
