@@ -218,15 +218,15 @@
     <div class="modal fade" id="messageModal" role="dialog">
         <div class="modal-dialog">    
             <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Please Select One</h4>
-              </div>
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-                  <a href="index.php" type="button" class="btn btn-default" >Start Over</a>
-                  <a href="eventHistory.php" class="btn btn-primary">Go to History</a> 
-              </div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Please Select One</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <a href="index.php" type="button" class="btn btn-default" >Start Over</a>
+                    <a href="eventHistory.php" class="btn btn-primary">Go to History</a> 
+                </div>
             </div>      
         </div>
     </div>
@@ -369,9 +369,8 @@
                    tempA.push(value);
                }else{
                   var indx=names.indexOf(value);
-                  //console.log(value+" is a duplicate value");
-                  names[key]='Tie';
-                  names[indx]='Tie';
+                  names[key]=0;
+                  names[indx]=0;
                }
             });            
             names.sort(function(a, b){
@@ -381,15 +380,18 @@
               }
               return b - a;
             });
+            var playerPlaceIDArray={};
              $('.gotPer'+getgroupno).each(function() {
                  if($.inArray( parseFloat($(this).attr('playerplace')), names) === -1){
                      $(this).html('Tie');
+                     playerPlaceIDArray[$(this).data('playeridplace')]='Tie';
                  }
                  else{
-                     
-                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)));
+                     var p=getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1));
+                     playerPlaceIDArray[$(this).data('playeridplace')] = p;
+                     $(this).html(p);
                  }                 
-             });   
+             });
              var winnerPlaceDB= $('*[data-playeridplace="'+winner_id+'"]').text();
              var looserPlaceDB= $('*[data-playeridplace="'+looser_id+'"]').text();
             $.ajax({
@@ -407,7 +409,8 @@
                     looser_Match_Record : looser_Match_Record,
                     looser_game_record : looser_game_record,
                     winnerPlaceDB : winnerPlaceDB,
-                    looserPlaceDB : looserPlaceDB
+                    looserPlaceDB : looserPlaceDB,
+                    playerPlaceIDArray : playerPlaceIDArray
                 },
                 dataType : "json",
                 success:function(response){
@@ -506,9 +509,8 @@
                    tempA.push(value);
                }else{
                   var indx=names.indexOf(value);
-                  //console.log(value+" is a duplicate value");
-                  names[key]='Tie';
-                  names[indx]='Tie';
+                  names[key]=0;
+                  names[indx]=0;
                }
             });            
             names.sort(function(a, b){
@@ -517,13 +519,17 @@
                     else return 1;
               }
               return b - a;
-            });   
+            }); 
+            var playerPlaceIDArray={};
              $('.gotPer'+getgroupno).each(function() {
                 if($.inArray( parseFloat($(this).attr('playerplace')), names) === -1){
                      $(this).html('Tie');
+                      playerPlaceIDArray[$(this).data('playeridplace')] = 'Tie';
                  }
                  else{
-                     $(this).html(getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1)));
+                     var p=getGetOrdinal((($.inArray( parseFloat($(this).attr('playerplace')), names ))+1));
+                     playerPlaceIDArray[$(this).data('playeridplace')] = p;
+                     $(this).html(p);
                  } 
              });  
              var winnerPlaceDB= $('*[data-playeridplace="'+winner_id+'"]').text();
@@ -543,7 +549,8 @@
                     looser_Match_Record : looser_Match_Record,
                     looser_game_record : looser_game_record,
                     winnerPlaceDB : winnerPlaceDB,
-                    looserPlaceDB : looserPlaceDB
+                    looserPlaceDB : looserPlaceDB,
+                    playerPlaceIDArray : playerPlaceIDArray
                 },
                 dataType : "json",
                 success:function(response){
