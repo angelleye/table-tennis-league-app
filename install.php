@@ -9,7 +9,7 @@ if($con){
             $tableList[] = $cRow[0];
         }
         if(in_array('users',$tableList) && in_array('directoremails',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
-           echo "<script>window.location.href ='index.php';</script>";
+           echo "<script>window.location.href ='settings.php';</script>";
            exit;
         }       
     }
@@ -85,7 +85,7 @@ $(document).on('click','#goButton',function (){
             var response=JSON.parse(response);
             if(response.error == 'false'){
                 <?php $_SESSION['success']='1'; ?>
-                window.location.href='index.php';
+                window.location.href='settings.php';
             }
             else{
                 $('#errmsg').html('<div class="alert alert-danger" role="alert"><strong>Something went wrong</strong></div>');

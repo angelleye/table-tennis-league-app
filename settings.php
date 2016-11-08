@@ -67,7 +67,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="index.php"  style="cursor: pointer">Back</a>
+                        <a href="index.php" id='HomePage' style="cursor: pointer;display: none">Home</a>
                     </li>
                 </ul>
             </div>
@@ -79,6 +79,12 @@
     <div class="container" id="importDiv">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                <?php 
+                    if(isset($_SESSION['success'])){
+                        echo '<div class="alert alert-success" role="alert" id="alrt_success"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
+                        unset($_SESSION['success']);
+                    }
+                ?>
                 <div class="panel panel-info">
                     <div class="panel-heading"><strong>League Director Email(s)</strong></div>
                     <div class="panel-body">
@@ -99,6 +105,7 @@
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info" id="saveEmail">Save</button>
+                                    <a href="index.php" class="btn btn-success" id="HomePagebtn" style="display: none">Home Page</a>
                                 </div>
                             </div>
                         </form>  
@@ -124,11 +131,14 @@
             </div>
         </div>
     </div>
-    <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
+       <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrapvalidator-master/dist/js/bootstrapValidator.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.js"></script>
 </body>
 </html>
 
@@ -168,6 +178,8 @@
                      console.log(result);
                      $('#messageAlert').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>'+result.message+'.</strong></div>');
                      $form.bootstrapValidator('resetForm', true);
+                     $('#HomePage').show();
+                     $('#HomePagebtn').show();
                      $('textarea#demails').val(result.data);
                  }
                  else{
@@ -214,4 +226,7 @@
                  }
             }, 'json');
         });
+        setTimeout(function() {
+            $("#alrt_success").hide('blind', {}, 500)
+        }, 5000);
 </script>

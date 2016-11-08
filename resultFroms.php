@@ -1,6 +1,31 @@
 <?php
     session_start();
-    include './includes/dbconfig.php';    
+    error_reporting(0);
+    include './includes/dbconfig.php';
+    include './checkSetting.php';  
+    if($con){
+        $result = mysqli_query($con,"SHOW TABLES");
+        $tableList=array();
+        while($cRow = mysqli_fetch_array($result))
+        {
+            $tableList[] = $cRow[0];
+        }
+        if(in_array('users',$tableList) && in_array('directoremails',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
+            $test=checkEmailSetting();
+            if($test=='false'){
+                echo "<script>window.location.href ='settings.php';</script>";
+                die();
+            }
+        }
+        else{
+            echo "<script>window.location.href ='install.php';</script>";
+            die();
+        }       
+    }
+    else{
+        echo "<h1>Please update Database configuration</h1>";
+        exit;
+    }   
     $query="SELECT * FROM `event` where event_id='".$_SESSION['event_id']."'";
     $result= mysqli_query($con, $query);
     while($records=mysqli_fetch_array($result)){
@@ -14,6 +39,7 @@
     foreach ($players_array as $value){
         array_push($finalArray, explode(',', $value));
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">

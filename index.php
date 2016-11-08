@@ -2,6 +2,7 @@
     session_start();
     error_reporting(0);
     include './includes/dbconfig.php';
+    include './checkSetting.php';   
     if($con){
         $result = mysqli_query($con,"SHOW TABLES");
         $tableList=array();
@@ -10,7 +11,11 @@
             $tableList[] = $cRow[0];
         }
         if(in_array('users',$tableList) && in_array('directoremails',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
-            
+            $test=checkEmailSetting();
+            if($test=='false'){
+                echo "<script>window.location.href ='settings.php';</script>";
+                die();
+            }
         }
         else{
             echo "<script>window.location.href ='install.php';</script>";
@@ -93,12 +98,6 @@
     <div class="container" id="importDiv">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <?php 
-                    if(isset($_SESSION['success'])){
-                        echo '<div class="alert alert-success" role="alert" id="alrt_success"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
-                        unset($_SESSION['success']);
-                    }
-                ?>
                 <h1>Import Players</h1>
                 <div id="errorFlag"></div>
                 <form name="importForm" id="importForm" enctype="multipart/form-data"> 
@@ -528,9 +527,7 @@ $('#resetForm').click(function(){
         $('#refreshMe').click(function (){
             location.reload();
         });
-        setTimeout(function() {
-            $("#alrt_success").hide('blind', {}, 500)
-        }, 5000);
+        
         
         $(document).on('click','#getSelectedGroups',function (){
             var items = [];
