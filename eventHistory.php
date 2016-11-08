@@ -99,6 +99,25 @@
     <div id="ajaxContainer">
         
     </div>
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -163,10 +182,17 @@ $('#historyForm').bootstrapValidator({
                 dataType : "json",
                 success:function(response){
                     if(response.error==='false'){
-                        alert(response.message);
+                        $('#myModal')
+                                .find('.modal-title').html('').html('Success').end()
+                                .find('.modal-body').html('').html(response.message).end()
+                                .modal('show'); 
                     }
                     else{
                         alert(response.message);
+                        $('#myModal')
+                                .find('.modal-title').html('').html('Something went wrong').end()
+                                .find('.modal-body').html('').html(response.message).end()
+                                .modal('show'); 
                     }
                 }
             });

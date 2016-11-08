@@ -51,7 +51,7 @@ $attachArray = find_all_files("result/".$date);
     if(!$mail->send()) {
         echo json_encode(array('error'=>'true','message'=>$mail->ErrorInfo));
     } else {
-        echo json_encode(array('error'=>'false','message'=>'Success'));
+        echo json_encode(array('error'=>'false','message'=>'Email sent successfully to League Directors'));
     }
     
 
