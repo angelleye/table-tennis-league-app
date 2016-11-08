@@ -536,22 +536,24 @@ $('#resetForm').click(function(){
             var items = [];
             var chunk=[];
             var finalArray=[];
-            $("ul.sortable_list").children().each(function() {
-                var item = $(this).attr('data-id');
-                items.push(item);
-              });
-            var totalPlayers= items.length;
-            while (items.length > 0) {
-                chunk = items.splice(0,6);
-                finalArray.push(chunk);
+            var i=1;
+            var totalNoGroup=$("ul.sortable_list").length;
+            for(i=1;i<=totalNoGroup;i++){
+                items[i-1]=[];
+                $("#sortable"+i).children().each(function() {
+                    var item = $(this).attr('data-id');
+                    items[i-1].push(item);
+                  });
             }
+            var totalPlayers=$("ul.sortable_list").children().length;
+            finalArray=items;
             $.ajax({
                 type:'POST',
                 url: "saveEvent.php",
                 data:{
                     player_list : JSON.stringify(finalArray),
                     totalPlayers: totalPlayers,
-                    totalGroups : $("ul.sortable_list").length
+                    totalGroups : totalNoGroup
                 },
                 dataType : "json",
                 success:function(response){
