@@ -141,7 +141,7 @@
                     if($i==0){
                         echo '<div id="G'.($i+1).'" class="tab-pane fade in active">';
                         echo '<h1>Group '.($i+1).'</h1>';
-                        echo '<table class="table table-hover table-bordered table-responsive">';
+                        echo '<table class="table table-hover table-bordered table-responsive" id="tableG'.($i+1).'">';
                               for($j=-1;$j<count($finalArray[$i]);$j++){
                                     if($j==-1){
                                         echo '<thead>
@@ -153,7 +153,7 @@
                                                            echo $letter = chr($k);
                                                            echo "</th>";     
                                                     }       
-                                        echo        '<th>Game Record</th>
+                                        echo        '<th class="GR">Game Record</th>
                                                     <th>Match Record</th>
                                                     <th>Place</th>
                                                 </tr>
@@ -177,13 +177,14 @@
                                                         echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }       
                                                 } 
-                                        echo    "<td data-playeridGamerecord='{$u}'></td> 
+                                        echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
                                               </tr>";
                                     }
                               }  
                         echo '</table>';
+                        echo '<div id="addNewRowButton"><i class="glyphicon glyphicon-plus-sign rotate-icon" style="font-size: 2.0em;cursor:pointer"></i></div>';
                         echo '</div>';
                     }
                     else{
@@ -239,6 +240,8 @@
                 ?>
             </div>
         </div>
+        <div class="clearfix"></div>
+         <div class="clearfix" style="margin-top: 60px"></div>
         <div class="row"><div class="container"> <button class="btn btn-primary btn-lg" id="submitResult">Submit & E-mail All Results</button>  </div></div>
     </div>
     <div class="modal fade" id="messageModal" role="dialog">
@@ -253,6 +256,32 @@
                     <a href="index.php" type="button" class="btn btn-default" >Start Over</a>
                     <a href="eventHistory.php" class="btn btn-primary">Go to History</a> 
                 </div>
+            </div>      
+        </div>
+    </div>
+    <div class="modal fade" id="dynamicUserModal" role="dialog">
+        <div class="modal-dialog">    
+            <div class="modal-content">
+                <form role="form" id="addUserForm" method="post" action="addFlyUser.php">
+                    <div class="modal-header">
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="groupId" value="" id="hiddenGroupId" />
+                        <div class="form-group">
+                            <label>First name</label>
+                            <input type="text" class="form-control" autocomplete="off" autofocus name="fname"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Last name</label>
+                            <input type="text" class="form-control" autocomplete="off" name="lname"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" name="submit" class="btn btn-success" value="Add" id="adButton"/>
+                        <a class="btn btn-primary" data-dismiss="modal">Close</a> 
+                    </div>
+                </form>
             </div>      
         </div>
     </div>
@@ -661,14 +690,7 @@
                             }
                         }
                     }
-                }/*,
-                wr :{
-                    validators: {
-                        notEmpty: {
-                            message: 'Please select Winnner'
-                        }
-                    }                    
-                } */
+                }
             }
         })
         .on('success.form.bv', function(e) {
@@ -676,4 +698,99 @@
             saveToTable();
             $(e.target).bootstrapValidator('resetForm', true);
         });
+        
+$('#addNewRowButton').click(function(){
+    var divSelector=$(this).parent('div');
+    var tableSelector=$(this).parent('div').children('table');
+    var groupId=divSelector.attr('id');
+    $('#hiddenGroupId').val(groupId);
+    $('#dynamicUserModal')
+        .find('.modal-title').html('').html("Add New User to " + divSelector.children('h1').text()).end()
+                             .modal('show'); 
+    
+});  
+
+ $('#addUserForm').bootstrapValidator({
+    message: 'This value is not valid',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        fname: {
+            message: 'The Firstname Field entered is not valid.',
+            validators: {
+                notEmpty: {
+                    message: 'The First Name Field is required and can\'t be empty.'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 30,
+                    message: 'The First Name must be more than 2 and fewer than 30 characters long.'
+                },
+                regexp: {
+                    regexp: /^[a-zA-Z]+$/,
+                    message: 'The First Name can only consist of alphabetical characters.'
+                }
+            }
+        },
+        lname: {
+            message: 'The Lastname Field entered is not valid.',
+            validators: {
+                notEmpty: {
+                    message: 'The Last Name Field is required and can\'t be empty.'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 30,
+                    message: 'The Last Name must be more than 2 and fewer than 30 characters long.'
+                },
+                regexp: {
+                    regexp: /^[a-zA-Z]+$/,
+                    message: 'The Last Name can only consist of alphabetical characters.'
+                }
+            }
+        }
+    }
+ }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);
+           // Get the BootstrapValidator instance
+           var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                if(result.error=="false"){
+                    $form.bootstrapValidator('resetForm', true);
+                    $('#dynamicUserModal').modal('hide');
+                    //result.last_inserted_id;
+                    var tableId=$('#'+result.groupId).children('table').attr('id');
+                    var appendText='';
+                   appendText+='<tr><th scope="row">G</th>';
+                   appendText+='<td data-playerid="6" class="G1PlayerColF">Tejas Xiao</td>';
+                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="A" data-combination="G1-F-A"></td>';
+                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="B" data-combination="G1-F-B"></td>';
+                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="C" data-combination="G1-F-C"></td>';
+                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="D" data-combination="G1-F-D"></td>'; 
+                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="E" data-combination="G1-F-E"></td>';
+                   appendText+='<td data-i="0" data-j="5" data-k="" style="cursor: not-allowed;background-color: #f5f5f5;"></td>'; 
+                   appendText+='<td data-playeridgamerecord="6"></td>'; 
+                   appendText+='<td data-playeridmatchrecord="6"></td>';
+                   appendText+='<td data-playeridplace="6" data-groupplace="G1" playerplace="Tie">Tie</td>';
+                   appendText+='</tr>';
+                   $('#'+tableId+' tbody tr:last').after(appendText);
+                   
+                   //col
+                   $('#'+tableId+' tr').children('th.GR').before($("<th>G</th>"));
+                   //$('#'+tableId+' thead tr>th:last').html('G');
+                   //$('#'+tableId+' tbody tr').each(function(){$(this).children('td:last').append($('<input type="checkbox">'))});
+                }
+                else{
+                     alert(result.msg);
+                }
+                $form.bootstrapValidator('resetForm', true);
+            }, 'json');
+            
+});
+
 </script>

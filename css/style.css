@@ -110,3 +110,13 @@ border-color: #bce8f1;
 .table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th{
         background-color: inherit;
     }
+    
+    .rotate-icon {
+        -webkit-transition: -webkit-transform .5s ease-in-out;
+          transition:         transform .5s ease-in-out;
+    }
+    
+    .rotate-icon:hover {
+        -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+    }
