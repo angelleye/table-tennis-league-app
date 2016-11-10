@@ -171,10 +171,10 @@
                                                 }
                                                 for ($k=0; $k<count($finalArray[$i]); $k++) {  
                                                     if($k==$j){
-                                                        echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
+                                                        echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}'  data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'  style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }       
                                                 } 
                                         echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
@@ -184,13 +184,13 @@
                                     }
                               }  
                         echo '</table>';
-                        echo '<div id="addNewRowButton"><i class="glyphicon glyphicon-plus-sign rotate-icon" style="font-size: 2.0em;cursor:pointer"></i></div>';
+                        echo '<div class="addNewRowButton"><i class="glyphicon glyphicon-plus-sign rotate-icon" style="font-size: 2.0em;cursor:pointer"></i></div>';
                         echo '</div>';
                     }
                     else{
                         echo '<div id="G'.($i+1).'" class="tab-pane">';
                         echo '<h1>Group '.($i+1).'</h1>';
-                        echo '<table class="table table-hover table-bordered table-responsive">';
+                        echo '<table class="table table-hover table-bordered table-responsive" id="tableG'.($i+1).'">';
                               for($j=-1;$j<count($finalArray[$i]);$j++){
                                     if($j==-1){
                                         echo '<thead>
@@ -202,7 +202,7 @@
                                                            echo $letter = chr($k);
                                                            echo "</th>";     
                                                     }       
-                                        echo        '<th>Game Record</th>
+                                        echo        '<th class="GR">Game Record</th>
                                                     <th>Match Record</th>
                                                     <th>Place</th>
                                                 </tr>
@@ -220,20 +220,21 @@
                                                 }
                                                 for ($k=0; $k<count($finalArray[$i]); $k++) {  
                                                     if($k==$j){
-                                                        echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
+                                                        echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
                                                     }
                                                 }        
 
-                                        echo    "<td data-playeridGamerecord='{$u}'></td> 
+                                        echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
                                               </tr> ";
                                     }
                               }  
                         echo '</table>';
+                         echo '<div class="addNewRowButton"><i class="glyphicon glyphicon-plus-sign rotate-icon" style="font-size: 2.0em;cursor:pointer"></i></div>';
                         echo '</div>';
                     }                    
                 }
@@ -699,7 +700,7 @@
             $(e.target).bootstrapValidator('resetForm', true);
         });
         
-$('#addNewRowButton').click(function(){
+$('.addNewRowButton').click(function(){
     var divSelector=$(this).parent('div');
     var tableSelector=$(this).parent('div').children('table');
     var groupId=divSelector.attr('id');
@@ -764,33 +765,46 @@ $('#addNewRowButton').click(function(){
                     $form.bootstrapValidator('resetForm', true);
                     $('#dynamicUserModal').modal('hide');
                     //result.last_inserted_id;
-                    var tableId=$('#'+result.groupId).children('table').attr('id');
-                    var appendText='';
-                   appendText+='<tr><th scope="row">G</th>';
-                   appendText+='<td data-playerid="6" class="G1PlayerColF">Tejas Xiao</td>';
-                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="A" data-combination="G1-F-A"></td>';
-                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="B" data-combination="G1-F-B"></td>';
-                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="C" data-combination="G1-F-C"></td>';
-                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="D" data-combination="G1-F-D"></td>'; 
-                   appendText+='<td class="tdclass" data-i="0" data-j="5" data-k="" data-tdplayerid="6" data-player="Yufei Xiao" data-group="G1" data-rowno="F" data-colno="E" data-combination="G1-F-E"></td>';
-                   appendText+='<td data-i="0" data-j="5" data-k="" style="cursor: not-allowed;background-color: #f5f5f5;"></td>'; 
-                   appendText+='<td data-playeridgamerecord="6"></td>'; 
-                   appendText+='<td data-playeridmatchrecord="6"></td>';
-                   appendText+='<td data-playeridplace="6" data-groupplace="G1" playerplace="Tie">Tie</td>';
+                   var tableId=$('#'+result.groupId).children('table').attr('id');
+                   //col
+                   var NextHead = String.fromCharCode($('#'+tableId+' tr').children('th.GR').prev('th').text().charCodeAt(0)+1);
+                   $('#'+tableId+' tr').children('th.GR:first').before($("<th>"+NextHead+"</th>"));
+                   $('#'+tableId+' tr').children('td.GR').each(function(){
+                      var prevElement=$(this).prev('td');
+                      var prev_i=prevElement.data('i');
+                      var prev_j=prevElement.data('j');
+                      var prev_k=prevElement.data('k');
+                      var prev_rowno=prevElement.data('rowno');
+                      var prev_player=prevElement.data('player');
+                      var prev_tdplayerid=prevElement.data('tdplayerid');
+                      $(this).before('<td class="tdclass" data-i="'+prev_i+'" data-j="'+prev_j+'" data-k="'+(prev_k+1)+'" data-tdplayerid="'+prev_tdplayerid+'" data-player="'+prev_player+'" data-group="'+result.groupId+'" data-rowno="'+prev_rowno+'" data-colno="'+NextHead+'"  data-combination="'+result.groupId+'-'+prev_rowno+'-'+NextHead+'">'+NextHead+'</td>'); 
+                   });
+                   //row
+                   var charColumnCount=$('#'+tableId+' tr:first-child').children('td.tdclass:last').data('k');
+                   var lastTd=$('#'+tableId+' tbody tr:last').children('td.tdclass:first');
+                   var prevRow_i=lastTd.data('i');
+                   var prevRow_j=lastTd.data('j'); 
+                   var appendText='';
+                   appendText+='<tr><th scope="row">'+NextHead+'</th>';
+                   appendText+='<td data-playerid="'+result.last_inserted_id+'" class="'+result.groupId+'PlayerCol'+NextHead+'">'+result.fullname+'</td>';
+                   var i=0;
+                   for(i=0;i<=charColumnCount;i++){
+                       if(i==(prevRow_j+1)){
+                           appendText+='<td style="cursor: not-allowed;background-color: #f5f5f5;" data-i="'+prevRow_i+'" data-j="'+(prevRow_j+1)+'" data-k="'+i+'"  data-tdplayerid="'+result.last_inserted_id+'" data-player="'+result.fullname+'" data-group="'+result.groupId+'" data-rowno="'+NextHead+'" data-colno="'+String.fromCharCode(65+i)+'" data-combination="'+result.groupId+'-'+NextHead+'-'+String.fromCharCode(65+i)+'"></td>';
+                       }else{
+                           appendText+='<td class="tdclass" data-i="'+prevRow_i+'" data-j="'+(prevRow_j+1)+'" data-k="'+i+'"  data-tdplayerid="'+result.last_inserted_id+'" data-player="'+result.fullname+'" data-group="'+result.groupId+'" data-rowno="'+NextHead+'" data-colno="'+String.fromCharCode(65+i)+'" data-combination="'+result.groupId+'-'+NextHead+'-'+String.fromCharCode(65+i)+'"></td>';
+                       }                        
+                   }
+                   appendText+='<td data-playeridgamerecord="'+result.last_inserted_id+'" class="GR"></td>'; 
+                   appendText+='<td data-playeridmatchrecord="'+result.last_inserted_id+'"></td>';
+                   appendText+='<td data-playeridplace="'+result.last_inserted_id+'" data-groupplace="'+result.groupId+'" playerplace="Tie">Tie</td>';
                    appendText+='</tr>';
                    $('#'+tableId+' tbody tr:last').after(appendText);
-                   
-                   //col
-                   $('#'+tableId+' tr').children('th.GR').before($("<th>G</th>"));
-                   //$('#'+tableId+' thead tr>th:last').html('G');
-                   //$('#'+tableId+' tbody tr').each(function(){$(this).children('td:last').append($('<input type="checkbox">'))});
                 }
                 else{
                      alert(result.msg);
                 }
                 $form.bootstrapValidator('resetForm', true);
-            }, 'json');
-            
+            }, 'json');            
 });
-
 </script>

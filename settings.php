@@ -94,6 +94,10 @@
                             $count=  mysqli_num_rows($result);
                              if($count > 0){
                                  $emails=mysqli_fetch_row($result);
+                                 $style='style="display: none"';
+                             }
+                             else{
+                                 $style='style="display: block"';
                              }
                         ?>
                         <form role="form" id="settingForm" method="post" action="addEmails.php">
@@ -105,7 +109,7 @@
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info" id="saveEmail">Save</button>
-                                    <a href="index.php" class="btn btn-success" id="HomePagebtn" style="display: none">Home Page</a>
+                                    <a href="index.php" class="btn btn-success" id="HomePagebtn" >Home Page</a>
                                 </div>
                             </div>
                         </form>  

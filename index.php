@@ -3,6 +3,9 @@
     error_reporting(0);
     include './includes/dbconfig.php';
     include './checkSetting.php';   
+    if(isset($_SESSION['event_id'])){
+        unset($_SESSION['event_id']);
+    }
     if($con){
         $result = mysqli_query($con,"SHOW TABLES");
         $tableList=array();
