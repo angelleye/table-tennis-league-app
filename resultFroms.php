@@ -156,6 +156,7 @@
                                         echo        '<th class="GR">Game Record</th>
                                                     <th>Match Record</th>
                                                     <th>Place</th>
+                                                    <th>Remove</th>
                                                 </tr>
                                               </thead>';
                                     }
@@ -180,6 +181,7 @@
                                         echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
+                                                <td data-playeridplace='{$u}' data-groupRemove='G".($i+1)."'><i class='glyphicon glyphicon-minus' style='color: red;cursor:pointer'></i></td>     
                                               </tr>";
                                     }
                               }  
@@ -205,6 +207,7 @@
                                         echo        '<th class="GR">Game Record</th>
                                                     <th>Match Record</th>
                                                     <th>Place</th>
+                                                    <th>Remove</th>
                                                 </tr>
                                               </thead>';
                                     }
@@ -230,6 +233,7 @@
                                         echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
                                                 <td  data-playeridmatchrecord='{$u}'></td> 
                                                 <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
+                                                <td data-playeridplace='{$u}' data-groupRemove='G".($i+1)."'><i class='glyphicon glyphicon-minus' style='color: red;cursor:pointer'></i></td>         
                                               </tr> ";
                                     }
                               }  
