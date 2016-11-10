@@ -777,7 +777,7 @@ $('.addNewRowButton').click(function(){
                       var prev_rowno=prevElement.data('rowno');
                       var prev_player=prevElement.data('player');
                       var prev_tdplayerid=prevElement.data('tdplayerid');
-                      $(this).before('<td class="tdclass" data-i="'+prev_i+'" data-j="'+prev_j+'" data-k="'+(prev_k+1)+'" data-tdplayerid="'+prev_tdplayerid+'" data-player="'+prev_player+'" data-group="'+result.groupId+'" data-rowno="'+prev_rowno+'" data-colno="'+NextHead+'"  data-combination="'+result.groupId+'-'+prev_rowno+'-'+NextHead+'">'+NextHead+'</td>'); 
+                      $(this).before('<td class="tdclass" data-i="'+prev_i+'" data-j="'+prev_j+'" data-k="'+(prev_k+1)+'" data-tdplayerid="'+prev_tdplayerid+'" data-player="'+prev_player+'" data-group="'+result.groupId+'" data-rowno="'+prev_rowno+'" data-colno="'+NextHead+'"  data-combination="'+result.groupId+'-'+prev_rowno+'-'+NextHead+'"></td>'); 
                    });
                    //row
                    var charColumnCount=$('#'+tableId+' tr:first-child').children('td.tdclass:last').data('k');
