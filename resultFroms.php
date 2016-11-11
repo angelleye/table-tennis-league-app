@@ -56,6 +56,7 @@
     <link href="js/bootstrapvalidator-master/dist/css/bootstrapValidator.css" rel="stylesheet">
     <link rel="stylesheet" href="css/jquery-ui.css">
     <!-- Custom CSS -->
+    <link href="css/alertify.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -114,8 +115,8 @@
                       
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="saveTd">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
                 </div>
             </form>
@@ -175,13 +176,43 @@
                                                         echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}'  data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'  style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
+                                                        $getrecordsQuery="SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='".$_SESSION['event_id']."' AND `group_id`='G".($i+1)."' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
+                                                        $res_get_rec=mysqli_query($con, $getrecordsQuery);
+                                                        $countRec=  mysqli_num_rows($res_get_rec);
+                                                        if($countRec >0 ){
+                                                            $row=mysqli_fetch_row($res_get_rec);
+                                                            if($row[2]==$u){
+                                                                $dataTD='W '.$row[0];
+                                                            }
+                                                            else{
+                                                                $dataTD='L '.$row[1];
+                                                            }
+                                                        }
+                                                        else{
+                                                            $dataTD='';
+                                                        }
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'>{$dataTD}</td>";
                                                     }       
-                                                } 
-                                        echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
-                                                <td  data-playeridmatchrecord='{$u}'></td> 
-                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
-                                                <td data-playeridplace='{$u}' data-groupRemove='G".($i+1)."'><i class='glyphicon glyphicon-minus' style='color: red;cursor:pointer'></i></td>     
+                                                }
+                                                $query_tt="SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
+                                                FROM `users` 
+                                                JOIN records ON records.player_id=users.user_id 
+                                                where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$_SESSION['event_id']."'";                                        
+                                                $res_tt=mysqli_query($con, $query_tt);
+                                                $data_tt=mysqli_fetch_row($res_tt);
+                                                if(!empty($data_tt[1])){
+                                                    $className="style='cursor: not-allowed;background-color: #f5f5f5;'";
+                                                    $placeClass="class='gotPerG".($i+1)."'";
+                                                }
+                                                else{
+                                                    $className="class='removePlayer'";
+                                                    $placeClass="";
+                                                }
+                                                //$place=!empty($data_tt[2]) ? $data_tt[2] : 'Tie';
+                                        echo    "<td data-playeridGamerecord='{$u}' class='GR'>$data_tt[0]</td> 
+                                                <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
+                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie' {$placeClass}>$data_tt[2]</td> 
+                                                <td data-playeridRemove='{$u}' data-groupRemove='G".($i+1)."' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
                                               </tr>";
                                     }
                               }  
@@ -226,15 +257,44 @@
                                                         echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                                     }
                                                     else{
-                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'></td>";
+                                                                                                                $getrecordsQuery="SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='".$_SESSION['event_id']."' AND `group_id`='G".($i+1)."' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
+                                                        $res_get_rec=mysqli_query($con, $getrecordsQuery);
+                                                        $countRec=  mysqli_num_rows($res_get_rec);
+                                                        if($countRec >0 ){
+                                                            $row=mysqli_fetch_row($res_get_rec);
+                                                            if($row[2]==$u){
+                                                                $dataTD='W '.$row[0];
+                                                            }
+                                                            else{
+                                                                $dataTD='L '.$row[1];
+                                                            }
+                                                        }
+                                                        else{
+                                                            $dataTD='';
+                                                        }
+                                                        echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'>{$dataTD}</td>";
                                                     }
                                                 }        
-
-                                        echo    "<td data-playeridGamerecord='{$u}' class='GR'></td> 
-                                                <td  data-playeridmatchrecord='{$u}'></td> 
-                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>Tie</td> 
-                                                <td data-playeridplace='{$u}' data-groupRemove='G".($i+1)."'><i class='glyphicon glyphicon-minus' style='color: red;cursor:pointer'></i></td>         
-                                              </tr> ";
+                                                $query_tt="SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
+                                                FROM `users` 
+                                                JOIN records ON records.player_id=users.user_id 
+                                                where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$_SESSION['event_id']."'";                                        
+                                                $res_tt=mysqli_query($con, $query_tt);
+                                                $data_tt=mysqli_fetch_row($res_tt);
+                                                if(!empty($data_tt[1])){
+                                                    $className="style='cursor: not-allowed;background-color: #f5f5f5;'";
+                                                    $placeClass="class='gotPerG".($i+1)."'";
+                                                }
+                                                else{
+                                                    $className="class='removePlayer'";
+                                                    $placeClass="";
+                                                }
+                                                //$place=!empty($data_tt[2]) ? $data_tt[2] : 'Tie';
+                                         echo    "<td data-playeridGamerecord='{$u}' class='GR'>$data_tt[0]</td> 
+                                                <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
+                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie' {$placeClass}>$data_tt[2]</td> 
+                                                <td data-playeridRemove='{$u}' data-groupRemove='G".($i+1)."' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
+                                              </tr>";
                                     }
                               }  
                         echo '</table>';
@@ -300,6 +360,7 @@
     <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/daterangepicker.js"></script>
+    <script src="js/alertify.min.js"></script>
 </html>
 
 <script type="text/javascript">
@@ -452,6 +513,14 @@
                      $(this).html(p);
                  }                 
              });
+             //below two lines disable to remove players who already played..
+             $('*[data-playeridplace="'+winner_id+'"]').next('td').removeClass('removePlayer');
+             $('*[data-playeridplace="'+looser_id+'"]').next('td').removeClass('removePlayer');
+             var styles = { backgroundColor : "#f5f5f5",cursor: "not-allowed"};
+             $('*[data-playeridplace="'+winner_id+'"]').next('td').css(styles);
+             $('*[data-playeridplace="'+looser_id+'"]').next('td').css(styles);
+             //remove disabled over
+             
              var winnerPlaceDB= $('*[data-playeridplace="'+winner_id+'"]').text();
              var looserPlaceDB= $('*[data-playeridplace="'+looser_id+'"]').text();
             $.ajax({
@@ -801,7 +870,8 @@ $('.addNewRowButton').click(function(){
                    }
                    appendText+='<td data-playeridgamerecord="'+result.last_inserted_id+'" class="GR"></td>'; 
                    appendText+='<td data-playeridmatchrecord="'+result.last_inserted_id+'"></td>';
-                   appendText+='<td data-playeridplace="'+result.last_inserted_id+'" data-groupplace="'+result.groupId+'" playerplace="Tie">Tie</td>';
+                   appendText+='<td data-playeridplace="'+result.last_inserted_id+'" data-groupplace="'+result.groupId+'" playerplace="Tie"></td>';
+                   appendText+='<td data-playeridRemove="'+result.last_inserted_id+'" data-groupRemove="'+result.groupId+'" class="removePlayer"><i class="glyphicon glyphicon-minus-sign" style="color: red;cursor:pointer"></i></td>';
                    appendText+='</tr>';
                    $('#'+tableId+' tbody tr:last').after(appendText);
                 }
@@ -811,4 +881,40 @@ $('.addNewRowButton').click(function(){
                 $form.bootstrapValidator('resetForm', true);
             }, 'json');            
 });
+
+$(document).on('click','.removePlayer',function(){
+    var tr=$(this).parent('tr');
+    var removePlayerId=$(this).data('playeridremove');
+    var removeGroupId=$(this).data('groupremove'); 
+    alertify.confirm('Delete Player','Are you sure you want to delete this player..?', 
+            function()
+            {
+                tr.hide();
+                $.ajax({
+                    type:'POST',
+                    url: "removePlayer.php",
+                    data:{
+                        removePlayerId  : removePlayerId,
+                        removeGroupId   : removeGroupId
+                    },
+                    dataType : "json",
+                    success:function(response){
+                         alertify.success('Player Deleted Successfully') 
+                         setTimeout(window.location.reload(), 5000);
+                    }
+                });               
+            }, 
+            function()
+            { 
+                //alertify.error('Cancel')
+            });    
+});
+
+</script>
+<script type="text/javascript">
+//override defaults
+alertify.defaults.transition = "slide";
+alertify.defaults.theme.ok = "btn btn-primary";
+alertify.defaults.theme.cancel = "btn btn-danger";
+alertify.defaults.theme.input = "form-control";
 </script>
