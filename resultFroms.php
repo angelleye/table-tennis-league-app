@@ -291,15 +291,21 @@
                                                 if(!empty($data_tt[1])){
                                                     $className="style='cursor: not-allowed;background-color: #f5f5f5;'";
                                                     $placeClass="class='gotPerG".($i+1)."'";
+                                                    $matchRecord=$data_tt[1];
+                                                    $gameRecord=$data_tt[0];
+                                                    $mrArray=explode('-',$matchRecord);
+                                                    $grArray=explode('-',$gameRecord);
+                                                    $playerplace= round((($mrArray[0])*100)/($mrArray[0]+$mrArray[1])).round((($grArray[0])*100)/($grArray[0]+$grArray[1]));
                                                 }
                                                 else{
                                                     $className="class='removePlayer'";
                                                     $placeClass="";
+                                                    $playerplace="Tie";
                                                 }
                                                 //$place=!empty($data_tt[2]) ? $data_tt[2] : 'Tie';
                                          echo    "<td data-playeridGamerecord='{$u}' class='GR'>$data_tt[0]</td> 
                                                 <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
-                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie' {$placeClass}>$data_tt[2]</td> 
+                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='{$playerplace}' {$placeClass}>$data_tt[2]</td> 
                                                 <td data-playeridRemove='{$u}' data-groupRemove='G".($i+1)."' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
                                               </tr>";
                                     }
