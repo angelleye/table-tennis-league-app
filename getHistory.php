@@ -22,7 +22,6 @@ $edate=date("Y-m-d", strtotime($edate));
                    $player_list=$records['player_list'];
                    $event_id=$records['event_id'];
                 }
-                echo $event_id;
                 $players_array=explode('|',$player_list);
                 $finalArray=array();
                 foreach ($players_array as $value){
