@@ -20,7 +20,9 @@ $edate=date("Y-m-d", strtotime($edate));
                    $total_players = $records['total_players'];
                    $group_list=explode('|',$records['group_list']);
                    $player_list=$records['player_list'];
+                   $event_id=$records['event_id'];
                 }
+                echo $event_id;
                 $players_array=explode('|',$player_list);
                 $finalArray=array();
                 foreach ($players_array as $value){
@@ -83,7 +85,7 @@ $edate=date("Y-m-d", strtotime($edate));
                                                 echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                                             }
                                             else{
-                                                $getrecordsQuery="SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='".$_SESSION['event_id']."' AND `group_id`='G".($i+1)."' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
+                                                $getrecordsQuery="SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='".$event_id."' AND `group_id`='G".($i+1)."' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
                                                 $res_get_rec=mysqli_query($con, $getrecordsQuery);
                                                 $countRec=  mysqli_num_rows($res_get_rec);
                                                 if($countRec >0 ){
@@ -104,7 +106,7 @@ $edate=date("Y-m-d", strtotime($edate));
                                         $query_tt="SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
                                              FROM `users` 
                                              JOIN records ON records.player_id=users.user_id 
-                                             where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$_SESSION['event_id']."'";
+                                             where users.user_id='$u' AND records.group_id='G".($i+1)."' AND records.event_id='".$event_id."'";
                                         
                                         $res_tt=mysqli_query($con, $query_tt);
                                         $data_tt=mysqli_fetch_row($res_tt);
