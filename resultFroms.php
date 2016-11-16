@@ -144,22 +144,22 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                 if ($j == -1) {
                                     echo '<thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th class="text-center">#</th>
                                                     <th>Player</th>';
                                     for ($k = 65; $k < (65 + count($finalArray[$i])); $k++) {
-                                        echo "<th>";
+                                        echo "<th class='text-center'>";
                                         echo $letter = chr($k);
                                         echo "</th>";
                                     }
-                                    echo '<th class="GR">Game Record</th>
-                                                    <th>Match Record</th>
-                                                    <th>Place</th>
-                                                    <th><i class="glyphicon glyphicon-trash"></i></th>
+                                    echo '<th class="GR" style="text-align: center;">Game Record</th>
+                                                    <th class="text-center">Match Record</th>
+                                                    <th class="text-center">Place</th>
+                                                    <th class="text-center"><i class="glyphicon glyphicon-trash"></i></th>
                                                 </tr>
                                               </thead>';
                                 } else {
                                     echo '<tr> 
-                                                <th scope="row">' . chr(($j + 65)) . '</th>';
+                                                <th scope="row" class="text-center">' . chr(($j + 65)) . '</th>';
                                     $u = $finalArray[$i][($j)];
                                     $qu = "SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                     $res = mysqli_query($con, $qu);
@@ -169,7 +169,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                     }
                                     for ($k = 0; $k < count($finalArray[$i]); $k++) {
                                         if ($k == $j) {
-                                            echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}'  data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'  style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
+                                            echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}'  data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'  style='cursor: not-allowed;background-color: #f5f5f5;text-align: center;'></td>";
                                         } else {
                                             $getrecordsQuery = "SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='" . $_SESSION['event_id'] . "' AND `group_id`='G" . ($i + 1) . "' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
                                             $res_get_rec = mysqli_query($con, $getrecordsQuery);
@@ -184,7 +184,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                             } else {
                                                 $dataTD = '';
                                             }
-                                            echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'>{$dataTD}</td>";
+                                            echo "<td style='text-align: center;' class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'>{$dataTD}</td>";
                                         }
                                     }
                                     $query_tt = "SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
@@ -194,7 +194,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                     $res_tt = mysqli_query($con, $query_tt);
                                     $data_tt = mysqli_fetch_row($res_tt);
                                     if (!empty($data_tt[1])) {
-                                        $className = "style='cursor: not-allowed;background-color: #f5f5f5;'";
+                                        $className = "style='cursor: not-allowed;background-color: #f5f5f5;text-align: center;'";
                                         $placeClass = "class='gotPerG" . ($i + 1) . "'";
                                         $matchRecord = $data_tt[1];
                                         $gameRecord = $data_tt[0];
@@ -202,16 +202,16 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                         $grArray = explode('-', $gameRecord);
                                         $playerplace = round((($mrArray[0]) * 100) / ($mrArray[0] + $mrArray[1])) . round((($grArray[0]) * 100) / ($grArray[0] + $grArray[1]));
                                     } else {
-                                        $className = "class='removePlayer'";
+                                        $className = "class='removePlayer text-center'";
                                         $placeClass = "";
                                         $playerplace = "Tie";
                                     }
 
                                     //$place=!empty($data_tt[2]) ? $data_tt[2] : 'Tie';
-                                    echo "<td data-playeridGamerecord='{$u}' class='GR'>$data_tt[0]</td> 
-                                                <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
-                                                <td data-playeridplace='{$u}' data-groupPlace='G" . ($i + 1) . "' playerplace='{$playerplace}' {$placeClass}>$data_tt[2]</td> 
-                                                <td data-playeridRemove='{$u}' data-groupRemove='G" . ($i + 1) . "' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
+                                    echo "<td data-playeridGamerecord='{$u}' class='GR' style='text-align: center;'>$data_tt[0]</td> 
+                                                <td  data-playeridmatchrecord='{$u}' style='text-align: center;'>$data_tt[1]</td> 
+                                                <td  style='text-align: center;' data-playeridplace='{$u}' data-groupPlace='G" . ($i + 1) . "' playerplace='{$playerplace}' {$placeClass}>$data_tt[2]</td> 
+                                                <td  data-playeridRemove='{$u}' data-groupRemove='G" . ($i + 1) . "' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
                                               </tr>";
                                 }
                             }
@@ -226,22 +226,22 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                 if ($j == -1) {
                                     echo '<thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th class="text-center">#</th>
                                                     <th>Player</th>';
                                     for ($k = 65; $k < (65 + count($finalArray[$i])); $k++) {
-                                        echo "<th>";
+                                        echo "<th class='text-center'>";
                                         echo $letter = chr($k);
                                         echo "</th>";
                                     }
-                                    echo '<th class="GR">Game Record</th>
-                                                    <th>Match Record</th>
-                                                    <th>Place</th>
-                                                    <th><i class="glyphicon glyphicon-trash"></i></th>
+                                    echo '<th class="GR" style="text-align: center;">Game Record</th>
+                                                    <th class="text-center">Match Record</th>
+                                                    <th class="text-center">Place</th>
+                                                    <th class="text-center"><i class="glyphicon glyphicon-trash"></i></th>
                                                 </tr>
                                               </thead>';
                                 } else {
                                     echo '<tr> 
-                                                <th scope="row">' . chr(($j + 65)) . '</th> ';
+                                                <th scope="row"  class="text-center">' . chr(($j + 65)) . '</th> ';
                                     $u = $finalArray[$i][($j)];
                                     $qu = "SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                     $res = mysqli_query($con, $qu);
@@ -266,7 +266,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                             } else {
                                                 $dataTD = '';
                                             }
-                                            echo "<td class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'>{$dataTD}</td>";
+                                            echo "<td style='text-align: center;' class='tdclass' data-i='{$i}' data-j='{$j}' data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G" . ($i + 1) . "' data-rowno='" . chr(($j + 65)) . "'  data-colno='" . chr(($k + 65)) . "'  data-combination='G" . ($i + 1) . "-" . chr(($j + 65)) . "-" . chr(($k + 65)) . "'>{$dataTD}</td>";
                                         }
                                     }
                                     $query_tt = "SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
@@ -276,7 +276,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                                 $res_tt=mysqli_query($con, $query_tt);
                                                 $data_tt=mysqli_fetch_row($res_tt);
                                                 if(!empty($data_tt[1])){
-                                                    $className="style='cursor: not-allowed;background-color: #f5f5f5;'";
+                                                    $className="style='cursor: not-allowed;background-color: #f5f5f5;text-align: center;'";
                                                     $placeClass="class='gotPerG".($i+1)."'";
                                                     $matchRecord=$data_tt[1];
                                                     $gameRecord=$data_tt[0];
@@ -285,14 +285,14 @@ for ($i = 1; $i <= count($group_list); $i++) {
                                                     $playerplace= round((($mrArray[0])*100)/($mrArray[0]+$mrArray[1])).round((($grArray[0])*100)/($grArray[0]+$grArray[1]));
                                                 }
                                                 else{
-                                                    $className="class='removePlayer'";
+                                                    $className="class='removePlayer text-center'";
                                                     $placeClass="";
                                                     $playerplace="Tie";
                                                 }
                                                 //$place=!empty($data_tt[2]) ? $data_tt[2] : 'Tie';
-                                         echo    "<td data-playeridGamerecord='{$u}' class='GR'>$data_tt[0]</td> 
-                                                <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
-                                                <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='{$playerplace}' {$placeClass}>$data_tt[2]</td> 
+                                         echo    "<td data-playeridGamerecord='{$u}' class='GR' style='text-align: center;'>$data_tt[0]</td> 
+                                                <td  data-playeridmatchrecord='{$u}' class='text-center'>$data_tt[1]</td> 
+                                                <td style='text-align: center;' data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='{$playerplace}' {$placeClass}>$data_tt[2]</td> 
                                                 <td data-playeridRemove='{$u}' data-groupRemove='G".($i+1)."' {$className}><i class='glyphicon glyphicon-minus-sign' style='color: red;cursor:pointer'></i></td>     
                                               </tr>";
                                 }
@@ -838,7 +838,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                 var tableId = $('#' + result.groupId).children('table').attr('id');
                 //col
                 var NextHead = String.fromCharCode($('#' + tableId + ' tr').children('th.GR').prev('th').text().charCodeAt(0) + 1);
-                $('#' + tableId + ' tr').children('th.GR:first').before($("<th>" + NextHead + "</th>"));
+                $('#' + tableId + ' tr').children('th.GR:first').before($("<th class='text-center'>" + NextHead + "</th>"));
                 $('#' + tableId + ' tr').children('td.GR').each(function () {
                     var prevElement = $(this).prev('td');
                     var prev_i = prevElement.data('i');
@@ -847,7 +847,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                     var prev_rowno = prevElement.data('rowno');
                     var prev_player = prevElement.data('player');
                     var prev_tdplayerid = prevElement.data('tdplayerid');
-                    $(this).before('<td class="tdclass" data-i="' + prev_i + '" data-j="' + prev_j + '" data-k="' + (prev_k + 1) + '" data-tdplayerid="' + prev_tdplayerid + '" data-player="' + prev_player + '" data-group="' + result.groupId + '" data-rowno="' + prev_rowno + '" data-colno="' + NextHead + '"  data-combination="' + result.groupId + '-' + prev_rowno + '-' + NextHead + '"></td>');
+                    $(this).before('<td style="text-align: center;" class="tdclass" data-i="' + prev_i + '" data-j="' + prev_j + '" data-k="' + (prev_k + 1) + '" data-tdplayerid="' + prev_tdplayerid + '" data-player="' + prev_player + '" data-group="' + result.groupId + '" data-rowno="' + prev_rowno + '" data-colno="' + NextHead + '"  data-combination="' + result.groupId + '-' + prev_rowno + '-' + NextHead + '"></td>');
                 });
                 //row
                 var charColumnCount = $('#' + tableId + ' tr:first-child').children('td.tdclass:last').data('k');
@@ -855,20 +855,20 @@ for ($i = 1; $i <= count($group_list); $i++) {
                 var prevRow_i = lastTd.data('i');
                 var prevRow_j = lastTd.data('j');
                 var appendText = '';
-                appendText += '<tr><th scope="row">' + NextHead + '</th>';
+                appendText += '<tr><th scope="row" class="text-center">' + NextHead + '</th>';
                 appendText += '<td data-playerid="' + result.last_inserted_id + '" class="' + result.groupId + 'PlayerCol' + NextHead + '">' + result.fullname + '</td>';
                 var i = 0;
                 for (i = 0; i <= charColumnCount; i++) {
                     if (i == (prevRow_j + 1)) {
                         appendText += '<td style="cursor: not-allowed;background-color: #f5f5f5;" data-i="' + prevRow_i + '" data-j="' + (prevRow_j + 1) + '" data-k="' + i + '"  data-tdplayerid="' + result.last_inserted_id + '" data-player="' + result.fullname + '" data-group="' + result.groupId + '" data-rowno="' + NextHead + '" data-colno="' + String.fromCharCode(65 + i) + '" data-combination="' + result.groupId + '-' + NextHead + '-' + String.fromCharCode(65 + i) + '"></td>';
                     } else {
-                        appendText += '<td class="tdclass" data-i="' + prevRow_i + '" data-j="' + (prevRow_j + 1) + '" data-k="' + i + '"  data-tdplayerid="' + result.last_inserted_id + '" data-player="' + result.fullname + '" data-group="' + result.groupId + '" data-rowno="' + NextHead + '" data-colno="' + String.fromCharCode(65 + i) + '" data-combination="' + result.groupId + '-' + NextHead + '-' + String.fromCharCode(65 + i) + '"></td>';
+                        appendText += '<td style="text-align: center;" class="tdclass" data-i="' + prevRow_i + '" data-j="' + (prevRow_j + 1) + '" data-k="' + i + '"  data-tdplayerid="' + result.last_inserted_id + '" data-player="' + result.fullname + '" data-group="' + result.groupId + '" data-rowno="' + NextHead + '" data-colno="' + String.fromCharCode(65 + i) + '" data-combination="' + result.groupId + '-' + NextHead + '-' + String.fromCharCode(65 + i) + '"></td>';
                     }
                 }
-                appendText += '<td data-playeridgamerecord="' + result.last_inserted_id + '" class="GR"></td>';
-                appendText += '<td data-playeridmatchrecord="' + result.last_inserted_id + '"></td>';
-                appendText += '<td data-playeridplace="' + result.last_inserted_id + '" data-groupplace="' + result.groupId + '" playerplace="Tie"></td>';
-                appendText += '<td data-playeridRemove="' + result.last_inserted_id + '" data-groupRemove="' + result.groupId + '" class="removePlayer"><i class="glyphicon glyphicon-minus-sign" style="color: red;cursor:pointer"></i></td>';
+                appendText += '<td data-playeridgamerecord="' + result.last_inserted_id + '" style="text-align: center;" class="GR"></td>';
+                appendText += '<td data-playeridmatchrecord="' + result.last_inserted_id + '" class="text-center"></td>';
+                appendText += '<td style="text-align: center;" data-playeridplace="' + result.last_inserted_id + '" data-groupplace="' + result.groupId + '" playerplace="Tie"></td>';
+                appendText += '<td data-playeridRemove="' + result.last_inserted_id + '" data-groupRemove="' + result.groupId + '" class="removePlayer text-center"><i class="glyphicon glyphicon-minus-sign" style="color: red;cursor:pointer;"></i></td>';
                 appendText += '</tr>';
                 $('#' + tableId + ' tbody tr:last').after(appendText);
             } else {

@@ -56,22 +56,22 @@ $edate=date("Y-m-d", strtotime($edate));
                             if($j==-1){
                                 echo '<thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th class="text-center">#</th>
                                             <th>Player</th>';      
                                             for ($k=65; $k<(65+count($finalArray[$i])); $k++) {  
-                                                   echo "<th>";
+                                                   echo "<th class='text-center'>";
                                                    echo $letter = chr($k);
                                                    echo "</th>";     
                                             }       
-                                echo        '<th>Game Record</th>
-                                            <th>Match Record</th>
-                                            <th>Place</th>
+                                echo        '<th style="text-align: center;">Game Record</th>
+                                            <th class="text-center">Match Record</th>
+                                            <th class="text-center">Place</th>
                                         </tr>
                                       </thead>';
                             }
                             else{
                                 echo '<tr> 
-                                        <th scope="row">'.chr(($j+65)).'</th>'; 
+                                        <th scope="row" class="text-center">'.chr(($j+65)).'</th>'; 
                                         $u=$finalArray[$i][($j)];
                                         $qu="SELECT CONCAT(fname,' ',lname) as Name FROM `users` where user_id='$u'";
                                         $res=mysqli_query($con, $qu);
@@ -99,7 +99,7 @@ $edate=date("Y-m-d", strtotime($edate));
                                                 else{
                                                     $dataTD='';
                                                 }
-                                                echo "<td class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'>{$dataTD}</td>";
+                                                echo "<td style='text-align: center;' class='tdclass' data-i='{$i}' data-j='{$j} data-k='{$k}' data-tdplayerid='{$u}' data-player='{$playerName}'  data-group='G".($i+1)."' data-rowno='".chr(($j+65))."'  data-colno='".chr(($k+65))."'  data-combination='G".($i+1)."-".chr(($j+65))."-".chr(($k+65))."'>{$dataTD}</td>";
                                             }       
                                         }
                                         $query_tt="SELECT `records`.`game_record` , `records`.`match_rocord`,`records`.`place` 
@@ -109,9 +109,9 @@ $edate=date("Y-m-d", strtotime($edate));
                                         
                                         $res_tt=mysqli_query($con, $query_tt);
                                         $data_tt=mysqli_fetch_row($res_tt);
-                                echo    "<td data-playeridGamerecord='{$u}'>$data_tt[0]</td> 
-                                        <td  data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
-                                        <td data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>$data_tt[2]</td> 
+                                echo    "<td style='text-align: center;' data-playeridGamerecord='{$u}'>$data_tt[0]</td> 
+                                        <td  style='text-align: center;' data-playeridmatchrecord='{$u}'>$data_tt[1]</td> 
+                                        <td style='text-align: center;' data-playeridplace='{$u}' data-groupPlace='G".($i+1)."' playerplace='Tie'>$data_tt[2]</td> 
                                       </tr>";
                             }
                       }  
