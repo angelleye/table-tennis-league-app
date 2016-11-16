@@ -49,7 +49,7 @@ if($con){
         <div class="container col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-4">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand myLogo" href="#"><img src="images/logo.png"></a>
+                <a class="navbar-brand myLogo" href="index.php"><img src="images/logo.png"></a>
             </div>
         </div>
     </nav>    
