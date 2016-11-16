@@ -1,7 +1,7 @@
 <?php
     session_start();
     include './includes/dbconfig.php';
-    $event_id=$_SESSION['event_id'];
+    $event_id=$_POST['event_id'];
     $removePlayerId = !empty($_POST['removePlayerId']) ? $_POST['removePlayerId'] : '';
     $removeGroupId = !empty($_POST['removeGroupId']) ? $_POST['removeGroupId'] : '';
     

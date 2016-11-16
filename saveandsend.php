@@ -5,8 +5,9 @@ include './includes/dbconfig.php';
 require_once './vendor/dompdf/dompdf/autoload.inc.php';
 use Dompdf\Dompdf;
 
-$date = date('Y-m-d');
+$date = $_POST['event_date'];
 $finalHtml = $_POST['finalHtml'];
+$event_id  = $_POST['event_id'];
 $i = 1;
 $css = '<style>
         div.absolute {
@@ -55,7 +56,7 @@ foreach ($finalHtml as $value) {
     if (!file_exists("result/" . $date)) {
         mkdir("result/" . $date, 0777, true);
     }
-    file_put_contents("result/".$date."/Group".$i."-".$_SESSION['event_id'].".pdf", $output);
+    file_put_contents("result/".$date."/Group".$i."-".$event_id.".pdf", $output);
     $i++;
 }
     $attachArray = find_all_files("result/".$date);

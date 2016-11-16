@@ -548,13 +548,15 @@ if ($con) {
         }
         var totalPlayers = $("ul.sortable_list").children().length;
         finalArray = items;
+        var date = moment(); 
         $.ajax({
             type: 'POST',
             url: "saveEvent.php",
             data: {
                 player_list: JSON.stringify(finalArray),
                 totalPlayers: totalPlayers,
-                totalGroups: totalNoGroup
+                totalGroups: totalNoGroup,
+                event_date :  date.format("YYYY-MM-DD")
             },
             dataType: "json",
             success: function (response) {

@@ -14,7 +14,7 @@
     }
     $group_list=implode('|',$array);
     $player_list=implode('|', $temp);
-    $eventDate=date('Y-m-d');
+    $eventDate=$_POST['event_date'];
     $query="INSERT INTO `event`(`event_date`, `group_list`, `player_list`, `total_players`, `total_groups`) 
                         VALUES ('$eventDate','$group_list','$player_list','$totalPlayers','$totalGroups')";
     $q = mysqli_query($con, $query);

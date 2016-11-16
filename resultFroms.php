@@ -333,6 +333,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="groupId" value="" id="hiddenGroupId" />
+                            <input type="hidden" name="eventId" value="<?php echo $_SESSION['event_id']; ?>" id="hiddenEventId" />
                             <div class="form-group">
                                 <label>First name</label>
                                 <input type="text" class="form-control" autocomplete="off" autofocus name="fname"/>
@@ -699,11 +700,14 @@ for ($i = 1; $i <= count($group_list); $i++) {
         $('.tab-content').children().each(function () {
             finalHtml.push($(this).html());
         });
+        var date = moment(); 
         $.ajax({
             type: 'POST',
             url: "saveandsend.php",
             data: {
                 finalHtml: finalHtml,
+                event_id : <?php echo $_SESSION['event_id']; ?>,
+                event_date     : date.format("YYYY-MM-DD")
             },
             beforeSend: function () {
                 $('#overlay').show();
@@ -891,7 +895,8 @@ for ($i = 1; $i <= count($group_list); $i++) {
                         url: "removePlayer.php",
                         data: {
                             removePlayerId: removePlayerId,
-                            removeGroupId: removeGroupId
+                            removeGroupId: removeGroupId,
+                            event_id : <?php echo $_SESSION['event_id']; ?>
                         },
                         dataType: "json",
                         success: function (response) {

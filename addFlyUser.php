@@ -1,7 +1,7 @@
 <?php
     session_start();
     include './includes/dbconfig.php';
-    $event_id=$_SESSION['event_id'];
+    $event_id=$_POST['eventId'];
     $firstname = !empty($_POST['fname']) ? $_POST['fname'] : '';
     $lastname  = !empty($_POST['lname']) ? $_POST['lname'] : '';
     $groupId  = !empty($_POST['groupId']) ? $_POST['groupId'] : '';
