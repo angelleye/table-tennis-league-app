@@ -415,7 +415,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
             var wcmb = getgroupno + '-' + getrowno + '-' + getcolno;
             var lcmb = getgroupno + '-' + getcolno + '-' + getrowno;
             $('*[data-combination="' + wcmb + '"]').text('W ' + games);
-            var backway = games.split("").reverse().join("");
+            var backway = games.split("-").reverse().join("-");
             $('*[data-combination="' + lcmb + '"]').text('L ' + backway);
             var winner_id = rowPlayerId;
             var looser_id = colPlayerId;
@@ -566,7 +566,7 @@ for ($i = 1; $i <= count($group_list); $i++) {
             var wcmb = getgroupno + '-' + getcolno + '-' + getrowno;
             var lcmb = getgroupno + '-' + getrowno + '-' + getcolno;
             $('*[data-combination="' + wcmb + '"]').text('W ' + games);
-            var backway = games.split("").reverse().join("");
+            var backway = games.split("-").reverse().join("-");
             $('*[data-combination="' + lcmb + '"]').text('L ' + backway);
             var winner_id = colPlayerId;
             var looser_id = rowPlayerId;
