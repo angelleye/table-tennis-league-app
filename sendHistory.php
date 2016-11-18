@@ -23,14 +23,7 @@ $attachArray = find_all_files("result/".$date);
     
     $mail = new PHPMailer;
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-    $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'testfirstlastname009@gmail.com';                 // SMTP username
-    $mail->Password = 'itpath@009';                           // SMTP password
-    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 465;                                    // TCP port to connect to
+    $mail->CharSet = 'UTF-8';    
 
     $mail->setFrom('testfirstlastname009@gmail.com', 'TJ');
     if(!empty($emailArray)){
