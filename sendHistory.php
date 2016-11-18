@@ -24,13 +24,13 @@ $attachArray = find_all_files("result/".$date);
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
     $mail->CharSet = 'UTF-8';    
 
-    $mail->setFrom('testfirstlastname009@gmail.com', 'TJ');
+    $mail->setFrom('noreply@kansascitytabletennis.com', 'No Reply');
     if(!empty($emailArray)){
        foreach($emailArray as $value){
             $mail->addAddress($value);     // Add a recipient
         } 
     }
-    $mail->addReplyTo('tejasm@itpathsolutions.co.in', 'Reply name');
+    
     foreach($attachArray as $image){
         $mail->addAttachment($image);         // Add attachments
     }
