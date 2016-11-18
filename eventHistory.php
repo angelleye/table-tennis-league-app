@@ -160,7 +160,7 @@ $('#historyForm').bootstrapValidator({
         var bv = $form.data('bootstrapValidator');
         $.post($form.attr('action'), $form.serialize(), function(result) {
             $('#ajaxContainer').html('').html(result);
-            $form.bootstrapValidator('resetForm', true); 
+             $form.bootstrapValidator('disableSubmitButtons', false); 
         });
     });
     

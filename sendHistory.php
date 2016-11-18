@@ -3,7 +3,6 @@ session_start();
 require './vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 include './includes/dbconfig.php';
 
-
 $date = date("Y-m-d", strtotime($_POST['edate']));
 $finalHtml = $_POST['finalHtml'];
 
