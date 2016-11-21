@@ -24,7 +24,7 @@ $attachArray = find_all_files("result/".$date);
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
     $mail->CharSet = 'UTF-8';    
 
-    $mail->setFrom('noreply@kansascitytabletennis.com', 'No Reply');
+    $mail->setFrom('noreply@kansascitytabletennis.com', 'KCTT');
     if(!empty($emailArray)){
        foreach($emailArray as $value){
             $mail->addAddress($value);     // Add a recipient
