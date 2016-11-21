@@ -63,8 +63,17 @@ if ($con) {
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-left">
+                                
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a href="index.php" id='HomePage' style="cursor: pointer;display: none">Home</a>
+                                    <a href="index.php"  style="cursor: pointer">Start Over</a>
+                                </li>
+                                <li>
+                                    <a href="settings.php"  style="cursor: pointer">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="eventHistory.php"  style="cursor: pointer">History</a>
                                 </li>
                             </ul>
                         </div><!-- /.navbar-collapse --> 
