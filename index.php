@@ -152,7 +152,7 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="searchLeft" id="searchLeft" placeholder="Search by USATT Member ID, Name or Rank" />
+                                <input type="text" class="form-control clearable" name="searchLeft" id="searchLeft" placeholder="Search by USATT Member ID, Name or Rank" />
                             </div>
                             <ul class="source connected">                      
                             </ul>
@@ -374,6 +374,7 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
 
     $('#searchLeft').keyup(function () {
         var searchText = $(this).val().toLowerCase();
+        $(this)[tog(this.value)]('x');
         $('.source > li').each(function () {
             var currentLiText = $(this).text().toLowerCase(),
                     showCurrentLi = currentLiText.indexOf(searchText) !== -1;
@@ -609,4 +610,14 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
             }
         });        
     });
+  function tog(v){return v?'addClass':'removeClass';} 
+  $(document).on('input', '.clearable', function(){
+    $(this)[tog(this.value)]('x');
+  }).on('mousemove', '.x', function( e ){
+    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]('onX');   
+  }).on('touchstart click', '.onX', function( ev ){
+    ev.preventDefault();
+    $(this).removeClass('x onX').val('').change();
+    $(this).trigger('keyup');
+  });
 </script>
