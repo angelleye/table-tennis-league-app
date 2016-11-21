@@ -60,7 +60,7 @@ foreach ($finalHtml as $value) {
     $i++;
 }
     $attachArray = find_all_files("result/".$date);
-    $query="SELECT `emails` FROM `directoremails`";
+    $query="SELECT `emails` FROM `settings`";
     $result= mysqli_query($con,$query);
     $count=  mysqli_num_rows($result);
     if($count > 0){

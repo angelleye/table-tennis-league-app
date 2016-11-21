@@ -42,7 +42,7 @@
                 }
              
         } else {
-            echo json_encode(array('error' => 'true', 'msg' => 'Only CSV files are allowed.'));
+            echo json_encode(array('error' => 'true', 'msg' => 'URL Does Not contain CSV File'));
             die();
         }
         

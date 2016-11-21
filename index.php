@@ -12,7 +12,7 @@ if ($con) {
     while ($cRow = mysqli_fetch_array($result)) {
         $tableList[] = $cRow[0];
     }
-    if (in_array('users', $tableList) && in_array('directoremails', $tableList) && in_array('event', $tableList) && in_array('records', $tableList) && in_array('result_tt', $tableList)) {
+    if (in_array('users', $tableList) && in_array('settings', $tableList) && in_array('event', $tableList) && in_array('records', $tableList) && in_array('result_tt', $tableList)) {
         $test = checkEmailSetting();
         if ($test == 'false') {
             echo "<script>window.location.href ='settings.php';</script>";
@@ -26,6 +26,8 @@ if ($con) {
     echo "<h1>Please update Database configuration</h1>";
     exit;
 }
+$urlsQuery=  mysqli_query($con, "SELECT `roster_urls` FROM `settings`");
+$recordsUrl=mysqli_fetch_row($urlsQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,6 +56,10 @@ if ($con) {
     </head>
 
     <body>
+        <div id="overlay" style=" background: #f6f6f6;opacity: 0.7;width: 100%;float: left;height: 100%;position: fixed;top: 0;z-index: 1031;text-align: center; display: none">
+            <img src="images/loading_tt.gif"  style=" position: relative;top: 20%;"/>
+            <div><h2>Loading...</h2></div>
+        </div>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="row">
@@ -120,6 +126,14 @@ if ($con) {
                             <div class="box-footer">
                                 <button class="btn btn-primary" id="ajaxImportUpload" type="submit">Submit</button>
                                 <button class="btn btn-primary" id="viewListButton" type="button" style="display: none">View List</button>
+                                <?php
+                                if (!empty($recordsUrl[0])) {
+                                        echo '<button type="button" class="btn btn-success" id="saveRosterUrl" data-roster="'.$recordsUrl[0].'">Pull From Roster URL</button>';
+                                }
+                                else{
+                                        echo '<a href="settings.php" class="btn btn-success">Set Roster URL</a>';
+                                }    
+                                 ?>           
                             </div>
                         </div>
                     </form>
@@ -567,5 +581,32 @@ if ($con) {
                 }
             }
         });
+    });
+    
+    $(document).on('click', '#saveRosterUrl', function () {
+        $.ajax({
+            type: 'POST',
+            url: "insertFromRoster.php",
+            data: {
+                rosterUrl : $(this).data('roster')
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $('#overlay').show();
+            },
+            complete: function () {
+                $('#overlay').hide();
+            },
+            success: function (result) {
+                if (result.error == "false") {
+                    $('#errorFlag').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + result.msg + '.</strong></div>');
+                     setTimeout(function () {
+                        $("#viewListButton").trigger("click");
+                    }, 1000);
+                } else {
+                    $('#errorFlag').html('').html('<div class="alert alert-danger" role="alert"> <strong>' + result.msg + '</strong></div>');
+                }
+            }
+        });        
     });
 </script>

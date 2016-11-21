@@ -8,7 +8,7 @@ if ($con) {
     while ($cRow = mysqli_fetch_array($result)) {
         $tableList[] = $cRow[0];
     }
-    if (in_array('users', $tableList) && in_array('directoremails', $tableList) && in_array('event', $tableList) && in_array('records', $tableList) && in_array('result_tt', $tableList)) {
+    if (in_array('users', $tableList) && in_array('settings', $tableList) && in_array('event', $tableList) && in_array('records', $tableList) && in_array('result_tt', $tableList)) {
         
     } else {
         echo "<script>window.location.href ='install.php';</script>";
@@ -86,7 +86,7 @@ if ($con) {
                         <div class="panel-heading"><strong>League Director Email(s)</strong></div>
                         <div class="panel-body">
                             <?php
-                            $query = "SELECT `emails` FROM `directoremails`";
+                            $query = "SELECT `emails`,`roster_urls` FROM `settings`";
                             $result = mysqli_query($con, $query);
                             $count = mysqli_num_rows($result);
                             if ($count > 0) {
@@ -100,8 +100,12 @@ if ($con) {
                                 <div id="messageAlert"></div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Enter Comma Seprated Email(s) Here</label>
-                                        <textarea class="form-control" id="demails" rows="3" name="emails" placeholder="For example : abc@email.com,Xyz@host.in"><?= $emails[0] ?></textarea>
+                                        <label>Enter Comma Separated Email(s) Here</label>
+                                        <textarea class="form-control" id="demails" rows="3" name="emails" placeholder="For example : abc@email.com,Xyz@host.in"><?php echo $emails[0]; ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Roster File URL</label>
+                                        <input type="text" name="rosterUrl" class="form-control" id="rosterUrl" value="<?php echo $emails[1]; ?>"/>    
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-info" id="saveEmail">Save</button>
@@ -109,23 +113,6 @@ if ($con) {
                                     </div>
                                 </div>
                             </form>  
-                        </div>
-                    </div>
-                    <div class="panel panel-success">
-                        <div class="panel-heading"><strong>Pull Roster from Website</strong></div>
-                        <div class="panel-body">
-                            <form role="form" id="urlSettingForm" method="post" action="insertFromRoster.php">
-                                <div id="messageAlert2"></div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Roster File URL</label>
-                                        <input type="text" name="rosterUrl" class="form-control" id="rosterUrl" />    
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success" id="saveRosterUrl">Pull File</button>
-                                    </div>
-                                </div>
-                            </form> 
                         </div>
                     </div>
                 </div>
@@ -162,41 +149,7 @@ if ($con) {
                         message: 'Please Provide Valid Input'
                     }
                 }
-            }
-        }
-    })
-            .on('success.form.bv', function (e) {
-                // Prevent form submission
-                e.preventDefault();
-                // Get the form instance
-                var $form = $(e.target);
-                // Get the BootstrapValidator instance
-                var bv = $form.data('bootstrapValidator');
-                // Use Ajax to submit form data
-                $.post($form.attr('action'), $form.serialize(), function (result) {
-                    if (result.error == "false") {
-                        console.log(result);
-                        $('#messageAlert').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + result.message + '.</strong></div>');
-                        $form.bootstrapValidator('resetForm', true);
-                        $('#HomePage').show();
-                        $('#HomePagebtn').show();
-                        $('textarea#demails').val(result.data);
-                    } else {
-                        $('#messageAlert').html('<div class="alert alert-danger" role="alert"> <strong>Something Went Wrong</strong></div>');
-                        $form.bootstrapValidator('resetForm', true);
-                    }
-                }, 'json');
-            });
-
-
-    $('#urlSettingForm').bootstrapValidator({
-        message: 'This value is not valid',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
+            },
             rosterUrl: {
                 message: 'Please Provide Valid Input',
                 validators: {
@@ -218,9 +171,15 @@ if ($con) {
                 // Use Ajax to submit form data
                 $.post($form.attr('action'), $form.serialize(), function (result) {
                     if (result.error == "false") {
-                        $('#messageAlert2').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + result.msg + '.</strong></div>');
+                        $('#messageAlert').html('<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + result.message + '.</strong></div>');
+                        $form.bootstrapValidator('resetForm', true);
+                        $('#HomePage').show();
+                        $('#HomePagebtn').show();
+                        $('textarea#demails').val(result.data);
+                        $('#rosterUrl').val(result.urlData);
                     } else {
-                        $('#messageAlert2').html('<div class="alert alert-danger" role="alert"> <strong>' + result.msg + '</strong></div>');
+                        $('#messageAlert').html('<div class="alert alert-danger" role="alert"> <strong>Something Went Wrong</strong></div>');
+                        $form.bootstrapValidator('resetForm', true);
                     }
                 }, 'json');
             });
