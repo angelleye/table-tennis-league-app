@@ -8,7 +8,7 @@ if($con){
         {
             $tableList[] = $cRow[0];
         }
-        if(in_array('users',$tableList) && in_array('directoremails',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
+        if(in_array('users',$tableList) && in_array('settings',$tableList) && in_array('event',$tableList) && in_array('records',$tableList) && in_array('result_tt',$tableList)){
            echo "<script>window.location.href ='settings.php';</script>";
            exit;
         }       

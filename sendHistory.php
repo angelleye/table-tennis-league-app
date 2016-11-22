@@ -7,7 +7,7 @@ $date = date("Y-m-d", strtotime($_POST['edate']));
 $finalHtml = $_POST['finalHtml'];
 
 $attachArray = find_all_files("result/".$date);
-    $query="SELECT `emails` FROM `directoremails`";
+    $query="SELECT `emails` FROM `settings`";
     $result= mysqli_query($con,$query);
     $count=  mysqli_num_rows($result);
     if($count > 0){
@@ -24,7 +24,7 @@ $attachArray = find_all_files("result/".$date);
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
     $mail->CharSet = 'UTF-8';    
 
-    $mail->setFrom('noreply@kansascitytabletennis.com', 'No Reply');
+    $mail->setFrom('noreply@kansascitytabletennis.com', 'KCTT');
     if(!empty($emailArray)){
        foreach($emailArray as $value){
             $mail->addAddress($value);     // Add a recipient

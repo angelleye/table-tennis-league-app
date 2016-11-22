@@ -3,7 +3,7 @@
     
      function checkEmailSetting(){
         include './includes/dbconfig.php';     
-        $query="SELECT `emails` FROM `directoremails`";
+        $query="SELECT `emails` FROM `settings`";
         $result= mysqli_query($con,$query);
         $count=  mysqli_num_rows($result);
          if($count > 0){
