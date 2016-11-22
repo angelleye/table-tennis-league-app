@@ -4,7 +4,7 @@
     
     $directorTable="CREATE TABLE `settings` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
-                        `emails` text NOT NULL , PRIMARY KEY (id)
+                        `emails` text NOT NULL , `roster_urls` varchar(255), PRIMARY KEY (id)
                     ) ENGINE=InnoDB DEFAULT CHARSET=latin1";
     $query=  mysqli_query($con, $directorTable);
     if(!empty(mysqli_error_list($con))){
