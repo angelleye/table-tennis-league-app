@@ -23,7 +23,7 @@
         if($q){ $flag=TRUE; } else { $flag=FALSE; }
     }
     if($flag==TRUE){
-        echo json_encode(array('error'=>'false','message'=>'League Director Email(s) Set Successfully','data'=>$string,'urlData'=>$_POST['rosterUrl']));
+        echo json_encode(array('error'=>'false','message'=>'Settings saved Successfully','data'=>$string,'urlData'=>$_POST['rosterUrl']));
     }
     else {
          echo json_encode(array('error'=>'true','message'=>'something went wrong'));

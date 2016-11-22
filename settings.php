@@ -87,12 +87,12 @@ if ($con) {
                 <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <?php
                     if (isset($_SESSION['success'])) {
-                        echo '<div class="alert alert-success" role="alert" id="alrt_success"><strong>Install completed successfully!  Ready for CSV import</strong></div>';
+                        echo '<div class="alert alert-success" role="alert" id="alrt_success"><strong>Install completed successfully! Please Set League Director(s) Email(s) and then Import Players.</strong></div>';
                         unset($_SESSION['success']);
                     }
                     ?>
                     <div class="panel panel-info">
-                        <div class="panel-heading"><strong>League Director Email(s)</strong></div>
+                        <div class="panel-heading"><strong>General Settings</strong></div>
                         <div class="panel-body">
                             <?php
                             $query = "SELECT `emails`,`roster_urls` FROM `settings`";
@@ -109,7 +109,7 @@ if ($con) {
                                 <div id="messageAlert"></div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Enter Comma Separated Email(s) Here</label>
+                                        <label>Director Email Address (Separate multiple addresses with a comma.)</label>
                                         <textarea class="form-control" id="demails" rows="3" name="emails" placeholder="For example : abc@email.com,Xyz@host.in"><?php echo $emails[0]; ?></textarea>
                                     </div>
                                     <div class="form-group">
