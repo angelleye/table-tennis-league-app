@@ -3,6 +3,7 @@
     include './includes/dbconfig.php';
     $array = array();
     $player_list  = json_decode($_POST['player_list']);
+    $player_list=array_filter(array_map('array_filter', $player_list));
     $totalPlayers = $_POST['totalPlayers'];
     $totalGroups  = $_POST['totalGroups'];
     $temp=array();
