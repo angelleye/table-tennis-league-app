@@ -26,8 +26,8 @@ if ($con) {
     echo "<h1>Please update Database configuration</h1>";
     exit;
 }
-$urlsQuery=  mysqli_query($con, "SELECT `roster_urls` FROM `settings`");
-$recordsUrl=mysqli_fetch_row($urlsQuery);
+$urlsQuery=  mysqli_query($con, "SELECT `roster_urls`,`player_per_group` FROM `settings`");
+$recordsSettings=mysqli_fetch_row($urlsQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,8 +127,8 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
                                 <button class="btn btn-primary" id="ajaxImportUpload" type="submit">Submit</button>
                                 <button class="btn btn-primary" id="viewListButton" type="button" style="display: none">View List</button>
                                 <?php
-                                if (!empty($recordsUrl[0])) {
-                                        echo '<button type="button" class="btn btn-success" id="saveRosterUrl" data-roster="'.$recordsUrl[0].'">Pull From Roster URL</button>';
+                                if (!empty($recordsSettings[0])) {
+                                        echo '<button type="button" class="btn btn-success" id="saveRosterUrl" data-roster="'.$recordsSettings[0].'">Pull From Roster URL</button>';
                                 }
                                 else{
                                         echo '<a href="settings.php" class="btn btn-success">Set Roster URL</a>';
@@ -336,7 +336,8 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
             type: 'POST',
             url: "selectedPlayers.php",
             data: {
-                user_id: jsonData
+                user_id: jsonData,
+                player_per_group : <?php echo $recordsSettings[1]; ?>
             },
             success: function (response) {
                 $('#dualListDiv').hide('slow').fadeOut('3000');

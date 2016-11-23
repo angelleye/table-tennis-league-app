@@ -95,14 +95,16 @@ if ($con) {
                         <div class="panel-heading"><strong>General Settings</strong></div>
                         <div class="panel-body">
                             <?php
-                            $query = "SELECT `emails`,`roster_urls` FROM `settings`";
+                            $query = "SELECT `emails`,`roster_urls`,player_per_group FROM `settings`";
                             $result = mysqli_query($con, $query);
                             $count = mysqli_num_rows($result);
                             if ($count > 0) {
                                 $emails = mysqli_fetch_row($result);
+                                $ppg=$emails[2];
                                 $style = '';
                             } else {
                                 $style = 'style="display: none"';
+                                $ppg=6;
                             }
                             ?>
                             <form role="form" id="settingForm" method="post" action="addEmails.php">
@@ -114,7 +116,11 @@ if ($con) {
                                     </div>
                                     <div class="form-group">
                                         <label>Roster File URL</label>
-                                        <input type="text" name="rosterUrl" class="form-control" id="rosterUrl" value="<?php echo $emails[1]; ?>"/>    
+                                        <input type="text" name="rosterUrl" class="form-control" id="rosterUrl" value="<?php echo $emails[1]; ?>" autocomplete="off"/>    
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Players Per Group</label>
+                                        <input type="text" name="player_per_group" class="form-control" id="player_per_group" value="<?php echo $ppg; ?>" autocomplete="off"/>    
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-info" id="saveEmail">Save</button>
@@ -167,6 +173,23 @@ if ($con) {
                         message: 'Please Provide Valid Input'
                     }
                 }
+            },
+            player_per_group:{
+                message: 'Please Provide Valid Input',
+                validators: {
+                     notEmpty: {
+                            message: 'This Field is required and cannot be empty'
+                    },
+                    regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: 'This Field can only consist of numbers'
+                    },
+                    greaterThan: {
+                        value: 2,
+                        inclusive: true,
+                        message: 'Players Per group has to be greater than or equals to 2'
+                    }
+                }
             }
         }
     })
@@ -186,6 +209,7 @@ if ($con) {
                         $('#HomePagebtn').show();
                         $('textarea#demails').val(result.data);
                         $('#rosterUrl').val(result.urlData);
+                        $('#player_per_group').val(result.player_per_group);
                     } else {
                         $('#messageAlert').html('<div class="alert alert-danger" role="alert"> <strong>Something Went Wrong</strong></div>');
                         $form.bootstrapValidator('resetForm', true);

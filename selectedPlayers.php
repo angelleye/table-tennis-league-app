@@ -1,5 +1,6 @@
 <?php
     include './includes/dbconfig.php';
+    $player_per_group=$_POST['player_per_group'];
     $array=json_decode($_POST['user_id']);
     $array=  implode(',', $array);
     $date=date('Y-m-d h:i:s');           
@@ -9,8 +10,8 @@
                array_push($temp, $row);
         }
         $j=0;
-        for($i=0;$i<count($temp);$i=$i+6){
-            $output[$j] = array_slice($temp, $i, 6);
+        for($i=0;$i<count($temp);$i=$i+$player_per_group){
+            $output[$j] = array_slice($temp, $i, $player_per_group);
             $j++;
         }
         $k=1;
