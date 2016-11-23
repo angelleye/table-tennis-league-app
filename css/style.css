@@ -153,3 +153,8 @@ border-color: #bce8f1;
     .clearable.x  { background-position: right 5px center; }
     .clearable.onX{ cursor: pointer; }
     .clearable::-ms-clear {display: none; width:0; height:0;}
+    
+    .searchPlayer {
+        padding: 10px 10px 0;
+        margin-bottom: 5px;
+    }

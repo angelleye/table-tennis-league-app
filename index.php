@@ -150,10 +150,10 @@ $recordsSettings=mysqli_fetch_row($urlsQuery);
                         <div class="panel-heading">
                             <h4><i class="fa fa-fw fa-check"></i>All Players<button type="button" id="leftSortButton" class="btn btn-warning pull-right">Sort</button></h4>
                         </div>
-                        <div class="panel-body">
-                            <div class="form-group">
+                         <div class="form-group searchPlayer">
                                 <input type="text" class="form-control clearable" name="searchLeft" id="searchLeft" placeholder="Search by USATT Member ID, Name or Rank" />
-                            </div>
+                         </div>
+                        <div class="panel-body">
                             <ul class="source connected">                      
                             </ul>
                         </div>
