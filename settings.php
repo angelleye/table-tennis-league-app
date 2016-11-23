@@ -157,7 +157,7 @@ if ($con) {
                 message: 'Please Provide Valid Input',
                 validators: {
                     notEmpty: {
-                        message: 'This Field is required and can\'t be empty.'
+                        message: 'This field is required and can\'t be empty.'
                     },
                     regexp: {
                         regexp: /^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},*[\W]*)+$/,
@@ -187,7 +187,7 @@ if ($con) {
                     greaterThan: {
                         value: 2,
                         inclusive: true,
-                        message: 'Players Per group has to be greater than or equals to 2'
+                        message: 'Players per group must be set to 2 or more.'
                     }
                 }
             }
