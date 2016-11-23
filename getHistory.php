@@ -86,7 +86,7 @@ $edate = date("Y-m-d", strtotime($edate));
                         }
                         for ($k = 0; $k < count($finalArray[$i]); $k++) {
                             if ($k == $j) {
-                                echo "<td data-i='{$i}' data-j='{$j} data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
+                                echo "<td data-i='{$i}' data-j='{$j}' data-k='{$k}' style='cursor: not-allowed;background-color: #f5f5f5;'></td>";
                             } else {
                                 $getrecordsQuery = "SELECT `winner_game_count`,`looser_game_count`,winner_id,looser_id FROM `result_tt` WHERE `event_id`='" . $event_id . "' AND `group_id`='G" . ($i + 1) . "' AND (`winner_id`='{$u}' OR `looser_id`='{$u}') AND (`winner_id`='{$finalArray[$i][$k]}' OR `looser_id`='{$finalArray[$i][$k]}')";
                                 $res_get_rec = mysqli_query($con, $getrecordsQuery);
