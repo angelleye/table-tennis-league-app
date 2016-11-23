@@ -553,14 +553,21 @@ $recordsUrl=mysqli_fetch_row($urlsQuery);
         var chunk = [];
         var finalArray = [];
         var i = 1;
-        var totalNoGroup = $("ul.sortable_list").length;
+        var totalNoGroup = $("ul.sortable_list").length;        
+        var temp=totalNoGroup;
         for (i = 1; i <= totalNoGroup; i++) {
             items[i - 1] = [];
-            $("#sortable" + i).children().each(function () {
-                var item = $(this).attr('data-id');
-                items[i - 1].push(item);
-            });
+            if($("#sortable" + i).children('li').length > 0){
+                $("#sortable" + i).children().each(function () {
+                    var item = $(this).attr('data-id');
+                    items[i - 1].push(item);
+                });
+            }
+            else{
+                temp--;
+            }
         }
+        totalNoGroup=temp;
         var totalPlayers = $("ul.sortable_list").children().length;
         finalArray = items;
         var date = moment(); 
